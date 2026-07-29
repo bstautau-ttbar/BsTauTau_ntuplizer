@@ -1,0 +1,50 @@
+# $!/bin/bash
+BASE=$CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/
+DATADIR=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
+OUTDIR=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
+CHANNEL=("mumu" "ee" "e" "mu")
+TOFORCE="--force"
+
+for channel in "${CHANNEL[@]}"
+do
+    echo "Processing channel: $channel"
+    ## - Bs->tau tau -
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau.root $TOFORCE
+    ### - DY -
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dy_000*_emu/"    -o ${OUTDIR}/DY.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dyext_000*_emu/" -o ${OUTDIR}/DY_ext.root $TOFORCE
+    ### - SINGLE TOP -
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_s_000*_emu/"      -o ${OUTDIR}/ST_s.root $TOFORCE
+    ##python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_t_000*_emu/"      -o ${OUTDIR}/ST_t_top.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_antit_000*_emu/"  -o ${OUTDIR}/ST_t_antitop.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_tw_000*_emu/"     -o ${OUTDIR}/ST_tW.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_antitw_000*_emu/" -o ${OUTDIR}/ST_tW_antitop.root $TOFORCE
+    ## - TTBAR -
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTTo2L2Nu_RunIIUL18_nanoAODv15_v1_000*_${channel}/"        -o ${OUTDIR}/${channel}_2018-testV0/TTTo2L2Nu.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTToSemiLeptonic_RunIIUL18_nanoAODv15_000*_${channel}/"    -o ${OUTDIR}/${channel}_2018-testV0/TTToSemileptonic.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_tt_had_000*_emu/"       -o ${OUTDIR}/${channel}_2018-testV0/TTToHadronic.root $TOFORCE
+    ### - W+jets -
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_w_000*_emu/"    -o ${OUTDIR}/W.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_wext_000*_emu/" -o ${OUTDIR}/W_ext.root $TOFORCE
+    ### - DIBOSON -
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_ww_000*_emu/" -o ${OUTDIR}/WW.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_wz_000*_emu/" -o ${OUTDIR}/WZ.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_zz_000*_emu/" -o ${OUTDIR}/ZZ.root $TOFORCE
+    #
+    ## - DATA -
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_SingleMuA_000*_emu/" -o ${OUTDIR}/SingleMuonA.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_SingleMuB_000*_emu/" -o ${OUTDIR}/SingleMuonB.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_SingleMuC_000*_emu/" -o ${OUTDIR}/SingleMuonC.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_SingleMuD_000*_emu/" -o ${OUTDIR}/SingleMuonD.root $TOFORCE
+    #
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_egammaA_000*_emu/" -o ${OUTDIR}/EGammaA.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_egammaB_000*_emu/" -o ${OUTDIR}/EGammaB.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_egammaC_000*_emu/" -o ${OUTDIR}/EGammaC.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_egammaD_000*_emu/" -o ${OUTDIR}/EGammaD.root $TOFORCE
+    #
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_muonEGA_0000_emu/" -o ${OUTDIR}/MuonEGA.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_muonEGB_0000_emu/" -o ${OUTDIR}/MuonEGB.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_muonEGC_0000_emu/" -o ${OUTDIR}/MuonEGC.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_muonEGD_0000_emu/" -o ${OUTDIR}/MuonEGD.root $TOFORCE
+    echo ""
+done   

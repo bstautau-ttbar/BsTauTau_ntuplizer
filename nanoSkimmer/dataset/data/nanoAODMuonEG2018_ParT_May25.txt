@@ -1,0 +1,8 @@
+# -- A --
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/muonEGA_106X/MuonEG/crab_muonEGA/250512_******/0000
+# -- B --
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/muonEGB_106X/MuonEG/crab_muonEGB/250512_******/0000
+# -- C --
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/muonEGC_106X/MuonEG/crab_muonEGC/250512_******/0000
+# -- D --
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/muonEGD_106X/MuonEG/crab_muonEGD/250512_******/0000

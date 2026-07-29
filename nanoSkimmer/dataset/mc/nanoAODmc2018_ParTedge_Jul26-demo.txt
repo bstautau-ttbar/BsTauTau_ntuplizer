@@ -1,0 +1,10 @@
+# ---
+# /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/
+# !!! no trailing / in the paths
+# --- 2018 MC samples wit UPartT branch 
+#
+# - SIGNAL -
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1/260710_****/0000
+# - TTBAR -
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15_v1/260711_*****/0000
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_v1_2026Jul14/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260714_******/0000

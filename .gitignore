@@ -1,60 +1,29 @@
-# Text files
-*.log
-*.npy
-
-# Multimedia
-*.pdf
-*.png
-*.root
-!corrections/sf_toolkit/sf_maps/*.root
-*/plots*
-
-*/archive
-# py cache
-*__pycache__
+# caches
+*__pycache__*
 *.pyc
-*.__afs*
 
-# condor
-*cbasile.cc
+# HTCondor
+*.sub
+FarmLocalNtuple*
 
-# vscode cache
-*.vscode
+# log files
+*.log
+*.out
+crabjobs_*/
 
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# backup files
-*/*/archive/*
+# temporary files
+*.tmp
+*.temp
 *.swp
 *.swo
+*.bak
+*.orig
 
-# Precompiled Headers
-*.gch
-*.pch
+# root files
+*.root
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-#ROOT executables 
-*_.d
-*_C.so
+# plots
+*.png
+*.pdf
+*.svg
+*.eps
