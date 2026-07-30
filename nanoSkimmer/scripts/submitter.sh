@@ -1,0 +1,6 @@
+#!/bin/bash
+condor_submit /afs/cern.ch/work/c/cbasile/BsTauTau_ttbar/minitonano/CMSSW_15_0_18/src/BsTauTau/nanoSkimmer/scripts/FarmLocalNtuple_2018_20260730-134306/condor_generator_ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_ee.sub
+condor_submit /afs/cern.ch/work/c/cbasile/BsTauTau_ttbar/minitonano/CMSSW_15_0_18/src/BsTauTau/nanoSkimmer/scripts/FarmLocalNtuple_2018_20260730-134306/condor_generator_ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_mumu.sub
+condor_submit /afs/cern.ch/work/c/cbasile/BsTauTau_ttbar/minitonano/CMSSW_15_0_18/src/BsTauTau/nanoSkimmer/scripts/FarmLocalNtuple_2018_20260730-134306/condor_generator_ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_e.sub
+condor_submit /afs/cern.ch/work/c/cbasile/BsTauTau_ttbar/minitonano/CMSSW_15_0_18/src/BsTauTau/nanoSkimmer/scripts/FarmLocalNtuple_2018_20260730-134306/condor_generator_ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_mu.sub
+echo "DONE | all jobs submitted"

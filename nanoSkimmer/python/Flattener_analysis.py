@@ -85,12 +85,13 @@ class Analysis(Module):
 
         self.out.branch("pass_jvm",             "I")
 
-        # FIXME: add area  and check ID
         self.out.branch("nj",                   "I")
         self.out.branch("j_pt",                 "F",  lenVar = "nj")
         self.out.branch("j_eta",                "F",  lenVar = "nj")
         self.out.branch("j_phi",                "F",  lenVar = "nj")
         self.out.branch("j_m",                  "F",  lenVar = "nj")
+        self.out.branch("j_area",               "F",  lenVar = "nj")
+        self.out.branch("j_corr",               "F",  lenVar = "nj")
         self.out.branch("j_puid",               "F",  lenVar = "nj")
         self.out.branch("j_ParTRawB",           "F",  lenVar = "nj")
         self.out.branch("j_ParTRawC",           "F",  lenVar = "nj")
@@ -101,12 +102,18 @@ class Analysis(Module):
         self.out.branch("j_ParTRawTauhtaumu",   "F",  lenVar = "nj")
         self.out.branch("j_deepflavB",          "F",  lenVar = "nj")
         self.out.branch("j_upartB",             "F",  lenVar = "nj")
-        #self.out.branch("j_upartB_sfL", "F",  lenVar = "nj")
-        #self.out.branch("j_upartB_sfM", "F",  lenVar = "nj")
-        #self.out.branch("j_upartB_sfT", "F",  lenVar = "nj")
-        #self.out.branch("j_upartB_sfXT", "F",  lenVar = "nj")
-        #self.out.branch("j_upartB_sfXXT", "F",  lenVar = "nj")
         self.out.branch("j_hadronFlavour",      "I",  lenVar = "nj")
+
+        self.out.branch("j_chEmEF",           "F",  lenVar = "nj")
+        self.out.branch("j_chHEF",            "F",  lenVar = "nj")
+        self.out.branch("j_muEF",             "F",  lenVar = "nj")
+        self.out.branch("j_musubf",           "F",  lenVar = "nj")
+        self.out.branch("j_neEmEF",           "F",  lenVar = "nj")
+        self.out.branch("j_neHEF",            "F",  lenVar = "nj")
+        self.out.branch("j_hfsigmaEtaEta",           "F",  lenVar = "nj")
+        self.out.branch("j_hfsigmaPhiPhi",           "F",  lenVar = "nj")
+        self.out.branch("j_hfcentralEtaStripSize",   "F",  lenVar = "nj")
+        self.out.branch("j_hfadjacentEtaStripsSize", "F",  lenVar = "nj")
 
         self.out.branch("ntau",             "I")
         self.out.branch("tau_pt",           "F",  lenVar = "ntau")
@@ -114,17 +121,13 @@ class Analysis(Module):
         self.out.branch("tau_phi",          "F",  lenVar = "ntau")
         self.out.branch("tau_charge",       "I",  lenVar = "ntau")
 
-        self.out.branch("nGenCand",              "I")
-        self.out.branch("GenCand_pdgId",         "I",  lenVar = "nGenCand")
-        self.out.branch("GenCand_pt",            "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_eta",           "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_phi",           "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_id",            "I",  lenVar = "nGenCand")
-        self.out.branch("GenCand_pt",            "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_eta",           "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_phi",           "F",  lenVar = "nGenCand")
-        self.out.branch("GenCand_isBsTauTau",    "I",  lenVar = "nGenCand")
-        self.out.branch("GenCand_isBsTauTaunew", "I",  lenVar = "nGenCand")
+        self.out.branch("nGenCand",                 "I")
+        self.out.branch("GenCand_pdgId",            "I",  lenVar = "nGenCand")
+        self.out.branch("GenCand_pt",               "F",  lenVar = "nGenCand")
+        self.out.branch("GenCand_eta",              "F",  lenVar = "nGenCand")
+        self.out.branch("GenCand_phi",              "F",  lenVar = "nGenCand")
+        self.out.branch("GenCand_status",           "I",  lenVar = "nGenCand")
+        self.out.branch("GenCand_isBsTauTau",       "I",  lenVar = "nGenCand")
         self.out.branch("GenCand_isBsTauTauh",      "I",  lenVar = "nGenCand")
         self.out.branch("GenCand_isBsTauTaue",      "I",  lenVar = "nGenCand")
         self.out.branch("GenCand_isBsTauTaumu",     "I",  lenVar = "nGenCand")
@@ -293,79 +296,69 @@ class Analysis(Module):
         
     # ---- GEN LEVEL ----  	
 
-        # select gen particles in simulation
+        # select relevant gen particles in simulation
         if self.isMC:
             self.selectGenParticles(event)
 
-        # select gen partcles to save based on pdgid
-        event.genCand=[]
-        event.genIdx=[]
-        idx=0
-        if self.isMC:
-            for genp in event.selectedGenParticles:
-                if (abs(genp.pdgId)==531 or abs(genp.pdgId)==15 or abs(genp.pdgId)==13 or abs(genp.pdgId)==11 or abs(genp.pdgId)==6 or abs(genp.pdgId)==24 or abs(genp.pdgId)==23):
-                    event.genCand.append(genp)
-                    event.genIdx.append(idx)
-                idx=idx+1
-
-
-        # selects relevant gen particles 
         _gen_pdgIDs = [531, 15, 13, 11, 6, 24, 23] #(Bs, tau, mu, e, top, W, Z)
         event.genCand=[]
         event.genIdx=[]
-
         idx=0
         if self.isMC:        
             for genp in event.selectedGenParticles:
                 if (abs(genp.pdgId) in _gen_pdgIDs):
-                    if DEBUGMODE:
-                        print(" +GenCand ({idx}) pdgId={id} pt={pt} eta={eta} phi={phi} motherIdx={motherIdx}".format(idx=idx, id=genp.pdgId, pt=genp.pt, eta=genp.eta, phi=genp.phi, motherIdx=genp.genPartIdxMother))
+                    if DEBUGMODE: print(" +GenCand ({idx}) PDG-id={id} pt={pt:.2f} eta={eta:.2f} phi={phi:.2f} mother-IDX={motherIdx} statusFlags={status:16b}".format(idx=idx, id=genp.pdgId, pt=genp.pt, eta=genp.eta, phi=genp.phi, motherIdx=genp.genPartIdxMother, status=genp.statusFlags))
                     event.genCand.append(genp)
                     event.genIdx.append(idx)
                 idx=idx+1
 
 
         gen_id     = [genp.pdgId for genp in event.genCand]
+        gen_status = [genp.statusFlags for genp in event.genCand]
         gen_pt     = [genp.pt for genp in event.genCand]
         gen_eta    = [genp.eta for genp in event.genCand]
         gen_phi    = [genp.phi for genp in event.genCand]
 
         # find Bs->tautau
         gen_isbstt = []
-        gen_isbsttnew = []
+        gen_isbsosc = []
         gen_isbstth = []
         gen_isbstte = []
         gen_isbsttmu = []
         gen_isbsttlep = []
 
-        for k in range(0,len(gen_pt)):
+        for k in range(len(event.genCand)):
             is_bstt = 0
-            is_bsttnew = 0
             is_bstth = 0
             is_bsttmu = 0
             is_bstte = 0
             is_bsttlep = 0
             taus_from_this_bs = []
-            # for each Bs -> find taus whose mother or grandmother is this Bs -> #NOTE : when Bs oscillates the tau pairs is counted twice (should not be a problem)
+            
             if abs(gen_id[k])==531: # Bs
+                
+                # check if the Bs comes from an oscillation (i.e. if the mother is a B_s-bar)
+                bsmother_idx = event.selectedGenParticles[event.genIdx[k]].genPartIdxMother
+                gen_isbsosc.append(int(bsmother_idx>=0 and event.selectedGenParticles[bsmother_idx].pdgId == -gen_id[k]))
+                if DEBUGMODE: print("  +Bs : idx = {idx} | mother idx = {mother} | oscillation = {osc}".format(idx=event.genIdx[k], mother=bsmother_idx, osc=gen_isbsosc[-1]))
                 for tau_idx, genp in enumerate(event.selectedGenParticles):
-                    if (abs(genp.pdgId)==15 and
-                        (abs(event.selectedGenParticles[genp.genPartIdxMother].pdgId)==531 or abs(event.selectedGenParticles[event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother].pdgId)==531) and
-                        (genp.genPartIdxMother == event.genIdx[k] or event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother==event.genIdx[k])
+                    if (
+                        abs(genp.pdgId)==15 and
+                        (abs(event.selectedGenParticles[genp.genPartIdxMother].pdgId)==531) and
+                        (genp.genPartIdxMother == event.genIdx[k])
                     ):
                         taus_from_this_bs.append((tau_idx, genp))
                         is_bstt=1
                         if DEBUGMODE:
-                            print("  +Bs->tautau: Bs idx={bs_idx} tau idx={tau_idx} tau pt={tau_pt} tau eta={tau_eta} tau phi={tau_phi}".format(bs_idx=k, tau_idx=tau_idx, tau_pt=genp.pt, tau_eta=genp.eta, tau_phi=genp.phi))
-
+                            print("  +Bs->tautau: Bs idx={bs_idx} tau idx={tau_idx} tau pt={tau_pt:.2f} tau eta={tau_eta:.2f} tau phi={tau_phi:.2f}".format(bs_idx=event.genIdx[k], tau_idx=tau_idx, tau_pt=genp.pt, tau_eta=genp.eta, tau_phi=genp.phi))
+            
 
             # tau decay mode classification
-            gen_isbstt.append(is_bstt)
             if len(taus_from_this_bs) == 2:
-                ## new inclusive definition (bs-> tautau)
                 if DEBUGMODE:
                     print("  +Bs->tautau: found 2 taus from Bs decay, classifying tau decay modes...")
-                is_bsttnew = 1
+                is_bstt = 1
+                
                 decay_modes = []
                 for tau_idx,tau in taus_from_this_bs:
                     daughters = [d for d in event.selectedGenParticles if d.genPartIdxMother == tau_idx]
@@ -386,8 +379,9 @@ class Analysis(Module):
                     is_bsttlep = 1
                 if DEBUGMODE:
                     print("  +Bs->tautau: tau decay modes classified as: ", decay_modes)
-            
-            gen_isbsttnew.append(is_bsttnew)
+            else: is_bstt = 0
+
+            gen_isbstt.append(is_bstt)
             gen_isbstth.append(is_bstth)
             gen_isbstte.append(is_bstte)
             gen_isbsttmu.append(is_bsttmu)
@@ -429,13 +423,15 @@ class Analysis(Module):
         jet_hfsigmaPhiPhi           = [jet.hfsigmaPhiPhi for jet in event.selectedAK4Jets]
         jet_hfcentralEtaStripSize   = [jet.hfcentralEtaStripSize for jet in event.selectedAK4Jets]
         jet_hfadjacentEtaStripsSize = [jet.hfadjacentEtaStripsSize for jet in event.selectedAK4Jets]
-
+    
+    # ---- TAU ----
         self.selectTaus(event, tauSel)
         tau_pt     = [tau.pt for tau in event.selectedTaus]
         tau_eta    = [tau.eta for tau in event.selectedTaus]
         tau_phi    = [tau.phi for tau in event.selectedTaus]
         tau_charge = [tau.charge for tau in event.selectedTaus]
-
+    
+    # ---- TRIGGER ----
         # trigger matching
         self.selectTriggerObjects(event)
         def is_trigger_matched(pdgid,trigger,lep):
@@ -451,57 +447,58 @@ class Analysis(Module):
                         if trigger=="cross" and pdgid==13 and bool(to.filterBits&5): return True
                         if trigger=="double" and pdgid==13 and bool(to.filterBits&4): return True
             return False
-
+    
+    # ---- OUT BRANCHES ----
 	    # lepton branches
         if self.channel=="mu" or self.channel=="mumu" or self.channel=="emu":
-               self.out.fillBranch("mu1_pt",             event.selectedMuons[0].pt)
-               self.out.fillBranch("mu1_eta",            event.selectedMuons[0].eta)
-               self.out.fillBranch("mu1_phi",            event.selectedMuons[0].phi)
-               self.out.fillBranch("mu1_dxy",            event.selectedMuons[0].dxy)
-               self.out.fillBranch("mu1_dz",             event.selectedMuons[0].dz)
-               self.out.fillBranch("mu1_charge",         event.selectedMuons[0].charge)
-               self.out.fillBranch("mu1_tightId",        event.selectedMuons[0].tightId)
-               self.out.fillBranch("mu1_iso",            event.selectedMuons[0].pfRelIso04_all)
-               self.out.fillBranch("mu1_singletrg",      is_trigger_matched(13,"single",event.selectedMuons[0]))
-               self.out.fillBranch("mu1_crosstrg",       is_trigger_matched(13,"cross",event.selectedMuons[0]))
-               self.out.fillBranch("mu1_doubletrg",      is_trigger_matched(13,"double",event.selectedMuons[0]))
+            self.out.fillBranch("mu1_pt",             event.selectedMuons[0].pt)
+            self.out.fillBranch("mu1_eta",            event.selectedMuons[0].eta)
+            self.out.fillBranch("mu1_phi",            event.selectedMuons[0].phi)
+            self.out.fillBranch("mu1_dxy",            event.selectedMuons[0].dxy)
+            self.out.fillBranch("mu1_dz",             event.selectedMuons[0].dz)
+            self.out.fillBranch("mu1_charge",         event.selectedMuons[0].charge)
+            self.out.fillBranch("mu1_tightId",        event.selectedMuons[0].tightId)
+            self.out.fillBranch("mu1_iso",            event.selectedMuons[0].pfRelIso04_all)
+            self.out.fillBranch("mu1_singletrg",      is_trigger_matched(13,"single",event.selectedMuons[0]))
+            self.out.fillBranch("mu1_crosstrg",       is_trigger_matched(13,"cross",event.selectedMuons[0]))
+            self.out.fillBranch("mu1_doubletrg",      is_trigger_matched(13,"double",event.selectedMuons[0]))
     
         if self.channel=="mumu":
-               self.out.fillBranch("mu2_pt",             event.selectedMuons[1].pt)
-               self.out.fillBranch("mu2_eta",            event.selectedMuons[1].eta)
-               self.out.fillBranch("mu2_phi",            event.selectedMuons[1].phi)
-               self.out.fillBranch("mu2_dxy",            event.selectedMuons[1].dxy)
-               self.out.fillBranch("mu2_dz",             event.selectedMuons[1].dz)
-               self.out.fillBranch("mu2_charge",         event.selectedMuons[1].charge)
-               self.out.fillBranch("mu2_tightId",        event.selectedMuons[1].tightId)
-               self.out.fillBranch("mu2_iso",            event.selectedMuons[1].pfRelIso04_all)
-               self.out.fillBranch("mu2_singletrg",      is_trigger_matched(13,"single",event.selectedMuons[1]))
-               self.out.fillBranch("mu2_crosstrg",       is_trigger_matched(13,"cross",event.selectedMuons[1]))
-               self.out.fillBranch("mu2_doubletrg",      is_trigger_matched(13,"double",event.selectedMuons[1]))
+            self.out.fillBranch("mu2_pt",             event.selectedMuons[1].pt)
+            self.out.fillBranch("mu2_eta",            event.selectedMuons[1].eta)
+            self.out.fillBranch("mu2_phi",            event.selectedMuons[1].phi)
+            self.out.fillBranch("mu2_dxy",            event.selectedMuons[1].dxy)
+            self.out.fillBranch("mu2_dz",             event.selectedMuons[1].dz)
+            self.out.fillBranch("mu2_charge",         event.selectedMuons[1].charge)
+            self.out.fillBranch("mu2_tightId",        event.selectedMuons[1].tightId)
+            self.out.fillBranch("mu2_iso",            event.selectedMuons[1].pfRelIso04_all)
+            self.out.fillBranch("mu2_singletrg",      is_trigger_matched(13,"single",event.selectedMuons[1]))
+            self.out.fillBranch("mu2_crosstrg",       is_trigger_matched(13,"cross",event.selectedMuons[1]))
+            self.out.fillBranch("mu2_doubletrg",      is_trigger_matched(13,"double",event.selectedMuons[1]))
                
         if self.channel=="e" or self.channel=="ee" or self.channel=="emu":
-               self.out.fillBranch("e1_pt",             event.selectedElectrons[0].pt)
-               self.out.fillBranch("e1_eta",            event.selectedElectrons[0].eta)
-               self.out.fillBranch("e1_phi",            event.selectedElectrons[0].phi)
-               self.out.fillBranch("e1_dxy",            event.selectedElectrons[0].dxy)
-               self.out.fillBranch("e1_dz",             event.selectedElectrons[0].dz)
-               self.out.fillBranch("e1_charge",         event.selectedElectrons[0].charge)
-               self.out.fillBranch("e1_cutbased",       event.selectedElectrons[0].cutBased)
-               self.out.fillBranch("e1_singletrg",      is_trigger_matched(11,"single",event.selectedElectrons[0]))
-               self.out.fillBranch("e1_crosstrg",       is_trigger_matched(11,"cross",event.selectedElectrons[0]))
-               self.out.fillBranch("e1_doubletrg",      is_trigger_matched(11,"double",event.selectedElectrons[0]))        
+            self.out.fillBranch("e1_pt",             event.selectedElectrons[0].pt)
+            self.out.fillBranch("e1_eta",            event.selectedElectrons[0].eta)
+            self.out.fillBranch("e1_phi",            event.selectedElectrons[0].phi)
+            self.out.fillBranch("e1_dxy",            event.selectedElectrons[0].dxy)
+            self.out.fillBranch("e1_dz",             event.selectedElectrons[0].dz)
+            self.out.fillBranch("e1_charge",         event.selectedElectrons[0].charge)
+            self.out.fillBranch("e1_cutbased",       event.selectedElectrons[0].cutBased)
+            self.out.fillBranch("e1_singletrg",      is_trigger_matched(11,"single",event.selectedElectrons[0]))
+            self.out.fillBranch("e1_crosstrg",       is_trigger_matched(11,"cross",event.selectedElectrons[0]))
+            self.out.fillBranch("e1_doubletrg",      is_trigger_matched(11,"double",event.selectedElectrons[0]))        
     
         if self.channel=="ee":
-               self.out.fillBranch("e2_pt",             event.selectedElectrons[1].pt)
-               self.out.fillBranch("e2_eta",            event.selectedElectrons[1].eta)
-               self.out.fillBranch("e2_phi",            event.selectedElectrons[1].phi)
-               self.out.fillBranch("e2_dxy",            event.selectedElectrons[1].dxy)
-               self.out.fillBranch("e2_dz",             event.selectedElectrons[1].dz)
-               self.out.fillBranch("e2_charge",         event.selectedElectrons[1].charge)
-               self.out.fillBranch("e2_cutbased",       event.selectedElectrons[1].cutBased)
-               self.out.fillBranch("e2_singletrg",      is_trigger_matched(11,"single",event.selectedElectrons[1]))
-               self.out.fillBranch("e2_crosstrg",       is_trigger_matched(11,"cross",event.selectedElectrons[1]))
-               self.out.fillBranch("e2_doubletrg",      is_trigger_matched(11,"double",event.selectedElectrons[1]))
+            self.out.fillBranch("e2_pt",             event.selectedElectrons[1].pt)
+            self.out.fillBranch("e2_eta",            event.selectedElectrons[1].eta)
+            self.out.fillBranch("e2_phi",            event.selectedElectrons[1].phi)
+            self.out.fillBranch("e2_dxy",            event.selectedElectrons[1].dxy)
+            self.out.fillBranch("e2_dz",             event.selectedElectrons[1].dz)
+            self.out.fillBranch("e2_charge",         event.selectedElectrons[1].charge)
+            self.out.fillBranch("e2_cutbased",       event.selectedElectrons[1].cutBased)
+            self.out.fillBranch("e2_singletrg",      is_trigger_matched(11,"single",event.selectedElectrons[1]))
+            self.out.fillBranch("e2_crosstrg",       is_trigger_matched(11,"cross",event.selectedElectrons[1]))
+            self.out.fillBranch("e2_doubletrg",      is_trigger_matched(11,"double",event.selectedElectrons[1]))
 
         
 
@@ -552,8 +549,8 @@ class Analysis(Module):
             self.out.fillBranch("GenCand_pt" ,                   gen_pt)
             self.out.fillBranch("GenCand_eta" ,                  gen_eta)
             self.out.fillBranch("GenCand_phi" ,                  gen_phi)
+            self.out.fillBranch("GenCand_status" ,               gen_status)
             self.out.fillBranch("GenCand_isBsTauTau" ,           gen_isbstt)
-            self.out.fillBranch("GenCand_isBsTauTaunew" ,        gen_isbsttnew)
             self.out.fillBranch("GenCand_isBsTauTauh",           gen_isbstth)
             self.out.fillBranch("GenCand_isBsTauTaue",           gen_isbstte)
             self.out.fillBranch("GenCand_isBsTauTaumu",          gen_isbsttmu)

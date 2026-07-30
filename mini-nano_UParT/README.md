@@ -1,27 +1,7 @@
 # Run NanoAODs adding our parT branch
 
 ## Setup environment
-USe `lxplus8` or access the singularity with `cmssw-el8`.
-```bash
-git clone --recursive git@github.com:bstautau-ttbar/BsTauTau_ntuplizer.git
-cd BsTauTau/make_samples/nano_with_part_branch
-
-export SCRAM_ARCH=el8_amd64_gcc12
-cmsrel CMSSW_15_0_18
-cd CMSSW_15_0_18/src/
-cmsenv
-git cms-init
-
-git cms-addpkg PhysicsTools/NanoAOD PhysicsTools/NanoAODTools
-git cms-addpkg PhysicsTools/PatAlgos
-git cms-addpkg RecoBTag
-
-## changes with new parT branches
-git cms-merge-topic -u elenavernazza:MyParT_CMSSW_15_0_18
-
-scram b -j8
-```
-Now we need to copy the model in the right directory
+Copy the model in the right directory
 ```bash
 cd $CMSSW_BASE/src/BsTauTau 
 mkdir -p $CMSSW_BASE/src/RecoBTag/Combined/data/UParTAK4/PUPPI/BsTauTau/
@@ -46,4 +26,4 @@ The config file already produced are in the `test/` folder you can test them loc
 
 ## Submission on CRAB
 
-First prepare a `.yaml` file with the dataset informations
+If not available, you need to prepare a `.yaml` file with the dataset informations. Use `fetch_info_dataset.py` and `multisubmitter_CRAB.py` in `production/` to check the datasets on DAS and submit one CRAB task per sample. See [`production/README.md`](production/README.md) for the full instructions.

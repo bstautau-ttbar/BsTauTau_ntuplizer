@@ -38,23 +38,51 @@ Edit `L63` of `$CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/m
 Example for a ttbar MC file in the emu final state. The trigger list can be left empty. Change the last word to run other final states, or to run over data (e.g. "emudata2018" instead of "emumc2018").
 
 ```bash
-python3 $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py output /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1/260710_222737/0000/step_nanoAODv15_10.root --bi $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_in.txt --bo $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_out.txt -c "(nMuon>0&&nElectron>0&&nJet>0)" -I BsTauTau.nanoSkimmer.Flattener_analysis analysis_emumc2018 -N 1000
+python3 $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py \
+ output \
+ /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1/260710_222737/0000/step_nanoAODv15_10.root \
+ --bi $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_in.txt \
+ --bo $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_out.txt \
+ -c "(nMuon>0&&nElectron>0&&nJet>0)" -I BsTauTau.nanoSkimmer.Flattener_analysis analysis_emumc2018 -N 1000
 ```
 
 ## Submit jobs via condor
 
-Edit runNtuplizer.py with (or add arguments to the command below):
- * location for the output ntuples in your eos repository
- * final state to be run
+`runNtuplizer.py` reads a list of input datasets, and for each one builds a Condor job
+per final-state channel (`e`, `mu`, `ee`, `emu`, `mumu`). Cuts, triggers, and GRL (for
+data) are picked per year from `python/EraConfig.py`. Each job is written into a
+`FarmLocalNtuple_<year>[_<tag>]_<timestamp>/` directory (condor `.sub` + worker script),
+alongside a `submitter.sh` that submits them all.
 
-Edit EraConfig.py:
- * comment or uncomment the last lines depending on whether you are running on MC or data (different json and trigger conditions)
+### Options
 
-Choose the list of files you want to run over in the command below (see lists of data and MC samples in BsTauTauAnalyzer/Flattener/data/).
+| Option | Description | Default |
+|---|---|---|
+| `-i`, `--input` | text file listing input dataset directories (one EOS path per line, no trailing `/`, `#` = comment) | `listSamplesMC2018.txt` |
+| `-y`, `--year` | data-taking year — selects trigger/GRL/cuts from `EraConfig.py` | `2018` |
+| `-o`, `--out` | output EOS directory for the skimmed ntuples | `/eos/.../test2018/` |
+| `-n`, `--nfiles` | max number of files to process per dataset (`-1` = all) | `-1` |
+| `--isdata` | run on data (applies GRL + data trigger) instead of MC | off |
+| `--filter` | glob filter (fnmatch) applied to dataset lines in the input list | `*` |
+| `-t`, `--tag` | extra tag appended to the Farm directory name | none |
+| `-s`, `--submit` | actually `condor_submit` the jobs (otherwise dry-run only) | off |
+| `-f`, `--force` | force resubmission (currently unused / FIXME in the script) | off |
 
-```
+### Example: skim a demo MC dataset list for 2018 (2 files/dataset, dry-run)
+
+```bash
 voms-proxy-init --voms=cms --valid=48:0
-python3 $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/scripts/runNtuplizer.py --in $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/data/NanoAODMC2024.txt
+python3 scripts/runNtuplizer.py \
+  --input dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt \
+  -y 2018 \
+  --out /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/ \
+  -n 2
 ```
 
-Follow the instructions printed by the above command to submit jobs. Don't forget the voms part. 
+This generates `FarmLocalNtuple_2018_<timestamp>/` with one condor submission file and
+worker script per dataset/channel found in the input list, plus a `submitter.sh`.
+Without `-s`/`--submit` nothing is actually sent to condor — inspect the generated
+files, then either add `-s` to the command or run `source submitter.sh` yourself.
+
+Input dataset lists live under `dataset/mc/` (MC) and `dataset/` (data), one EOS
+directory per line — see e.g. `dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt`.

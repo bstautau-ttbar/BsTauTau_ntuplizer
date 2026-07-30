@@ -87,7 +87,7 @@ if __name__ == '__main__':
     #executable      = args.executable
     #process_name    = 'args.process_name'
     tag             = args.tag
-    campaign        = args.campaign
+    #campaign        = args.campaign
     step            = 'nanoAODv15'
     todaystring     = datetime.date.today().strftime('%Y%b%d')
     version         = 'v'+str(args.version)
@@ -108,6 +108,7 @@ if __name__ == '__main__':
         print(f" ------ {sample} ------- ")
 
         thiscommon = common.get('mc' if info.get('isMC', True) else 'data', {})
+        campaign   = thiscommon.get('campaign', "None")
 
         process_name    = sample
         request_name    = '_'.join(filter(None, [process_name, step, tag, version]))
