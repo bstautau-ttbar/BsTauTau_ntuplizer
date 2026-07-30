@@ -1,0 +1,52 @@
+# this is a comment
+drop *
+
+#keep event info
+keep run*
+keep event*
+keep luminosityBlock*
+keep Flag*
+
+keep HLT_IsoMu24
+keep HLT_IsoTkMu24
+keep HLT_IsoMu27
+
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL
+
+keep HLT_Ele27_WPTight_Gsf
+keep HLT_Ele35_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf_L1DoubleEG
+keep HLT_Ele30_WPTight_Gsf
+
+keep HLT_DoubleEle25_CaloIdL_MW
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
+
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
+
+keep Pileup_nTrueInt*
+keep genWeight*
+keep Rho_fixedGridRho*
+keep Generator*
+keep LHE_Vpt*
+keep LHE_Njets*
+keep *LHEScale*
+keep *LHEPdf*
+keep *PSWeight*
+keep *GenPart*
+
+
+#keep objects
+keep MET_p*
+keep PuppiMET_p*
+keep Muon*
+keep Electron*
+keep Tau*
+keep Jet*
+keep PV_*
+keep TrigObj*
+
+keep L1PreFiringWeight*

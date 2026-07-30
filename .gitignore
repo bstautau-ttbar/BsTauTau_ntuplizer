@@ -1,0 +1,30 @@
+# caches
+*__pycache__*
+*.pyc
+
+# HTCondor
+*.sub
+FarmLocalNtuple*
+
+# log files
+*.log
+*.out
+crabjobs_*/
+cbasile.cc
+
+# temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+
+# root files
+*.root
+
+# plots
+*.png
+*.pdf
+*.svg
+*.eps

@@ -1,0 +1,7 @@
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuA_106X/DoubleMuon/crab_doublemuA/250331_142411/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuA_106X/DoubleMuon/crab_doublemuA/250331_142411/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuB_106X/DoubleMuon/crab_doublemuB/250331_142437/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuC_106X/DoubleMuon/crab_doublemuC/250331_142459/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuD_106X/DoubleMuon/crab_doublemuD/250331_142530/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuD_106X/DoubleMuon/crab_doublemuD/250331_142530/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nanoaods_with_part_branch/doublemuD_106X/DoubleMuon/crab_doublemuD/250331_142530/0002

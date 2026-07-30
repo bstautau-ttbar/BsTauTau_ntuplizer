@@ -1,0 +1,45 @@
+# ---
+# /eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/
+# --- 2018 MC samples wit UPartT branch
+#
+## - SIGNAL -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/bstautau_106X/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/crab_bstautau/250512_******/0000
+## - DY -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/dy_106X/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/crab_dy/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/dy_106X/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/crab_dy/250512_******/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/dyext_106X/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/crab_dyext/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/dyext_106X/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/crab_dyext/250512_******/0001
+## - SINGLE TOP -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_antit_106X/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/crab_st_antit/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_antit_106X/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/crab_st_antit/250512_******/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_antit_106X/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/crab_st_antit/250512_******/0002
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_antitw_106X/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8/crab_st_antitw/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_s_106X/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/crab_st_s/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/st_tw_106X/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8/crab_st_tw/250512_******/0000
+# - TTBAR -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/250512_******/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/250512_******/0002
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/250512_******/0003
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0002
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0003
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0004
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May14/tt_semilep_106X/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/crab_tt_semilep/250514_******/0005
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0001
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0002
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0003
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0004
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0005
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0006
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/250512_******/0007
+# - W + jets -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/w_106X/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/crab_w/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/wext_106X/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/crab_wext/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/wext_106X/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/crab_wext/250512_******/0001
+# - DIBOSON -
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/ww_106X/WW_TuneCP5_13TeV-pythia8/crab_ww/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/wz_106X/WZ_TuneCP5_13TeV-pythia8/crab_wz/250512_******/0000
+/eos/cms/store/cmst3/group/bpark/friti/bstautau/nano_with_part_2025May12/zz_106X/ZZ_TuneCP5_13TeV-pythia8/crab_zz/250512_******/0000
