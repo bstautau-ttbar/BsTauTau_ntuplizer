@@ -26,7 +26,7 @@ git cms-addpkg RecoBTag
 git cms-merge-topic -u elenavernazza:MyParT_CMSSW_15_0_18
 
 # IMPORTANT: get this repo and save it in BsTauTau folder 
-git clone --recursive git@github.com:bstautau-ttbar/BsTauTau_ntuplizer.git -n nanoAODv15 BsTauTau
+git clone --recursive git@github.com:bstautau-ttbar/BsTauTau_ntuplizer.git BsTauTau
 
 # compile
 scram b -j8
