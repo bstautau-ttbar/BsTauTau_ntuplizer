@@ -9,7 +9,8 @@ for channel in "${CHANNEL[@]}"
 do
     echo "Processing channel: $channel"
     ## - Bs->tau tau -
-    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau-ext.root $TOFORCE
     ### - DY -
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dy_000*_emu/"    -o ${OUTDIR}/DY.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dyext_000*_emu/" -o ${OUTDIR}/DY_ext.root $TOFORCE
@@ -20,8 +21,8 @@ do
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_tw_000*_emu/"     -o ${OUTDIR}/ST_tW.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_antitw_000*_emu/" -o ${OUTDIR}/ST_tW_antitop.root $TOFORCE
     ## - TTBAR -
-    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTTo2L2Nu_RunIIUL18_nanoAODv15_v1_000*_${channel}/"        -o ${OUTDIR}/${channel}_2018-testV0/TTTo2L2Nu.root $TOFORCE
-    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTToSemiLeptonic_RunIIUL18_nanoAODv15_000*_${channel}/"    -o ${OUTDIR}/${channel}_2018-testV0/TTToSemileptonic.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTTo2L2Nu_RunIIUL18_nanoAODv15_v1_000*_${channel}/"        -o ${OUTDIR}/${channel}_2018-testV0/TTTo2L2Nu.root $TOFORCE
+    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTToSemiLeptonic_RunIIUL18_nanoAODv15_000*_${channel}/"    -o ${OUTDIR}/${channel}_2018-testV0/TTToSemileptonic.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_tt_had_000*_emu/"       -o ${OUTDIR}/${channel}_2018-testV0/TTToHadronic.root $TOFORCE
     ### - W+jets -
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_w_000*_emu/"    -o ${OUTDIR}/W.root $TOFORCE

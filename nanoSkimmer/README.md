@@ -35,7 +35,7 @@ Edit `L63` of `$CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/m
 
 ## Run locally
 
-Example for a ttbar MC file in the emu final state. The trigger list can be left empty. Change the last word to run other final states, or to run over data (e.g. "emudata2018" instead of "emumc2018").
+Run the skimmer command locally, e.g. for a signal MC file in the `emu` $t\bar t$-channel. The `-I` options accept any module defined at the end of the [python/Flattener_analysis.py](python/Flattener_analysis.py) script.
 
 ```bash
 python3 $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py \
@@ -48,10 +48,11 @@ python3 $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py \
 
 ## Submit jobs via condor
 
-`runNtuplizer.py` reads a list of input datasets, and for each one builds a Condor job
-per final-state channel (`e`, `mu`, `ee`, `emu`, `mumu`). Cuts, triggers, and GRL (for
-data) are picked per year from `python/EraConfig.py`. Each job is written into a
-`FarmLocalNtuple_<year>[_<tag>]_<timestamp>/` directory (condor `.sub` + worker script),
+Submit the skimmer on `HTCondor` via `runNtuplizer.py`. Reads the input datasets form a text file, each line points to a directory containing the .root files to process.
+One Condor job is built per directory and per $t\bar t$-channel (`e`, `mu`, `ee`, `emu`, `mumu`).
+
+Each job is written into a
+`FarmLocalNtuple_<year>[_<tag>]_<timestamp>/` directory (condor `.sub` + worker script + logs),
 alongside a `submitter.sh` that submits them all.
 
 ### Options
@@ -68,12 +69,13 @@ alongside a `submitter.sh` that submits them all.
 | `-s`, `--submit` | actually `condor_submit` the jobs (otherwise dry-run only) | off |
 | `-f`, `--force` | force resubmission (currently unused / FIXME in the script) | off |
 
-### Example: skim a demo MC dataset list for 2018 (2 files/dataset, dry-run)
+**Example: skim a demo MC dataset list for 2018 (2 files/dataset, dry-run)**
 
 ```bash
+cd scripts
 voms-proxy-init --voms=cms --valid=48:0
-python3 scripts/runNtuplizer.py \
-  --input dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt \
+python3 runNtuplizer.py \
+  --input ../dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt \
   -y 2018 \
   --out /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/ \
   -n 2
@@ -86,3 +88,11 @@ files, then either add `-s` to the command or run `source submitter.sh` yourself
 
 Input dataset lists live under `dataset/mc/` (MC) and `dataset/` (data), one EOS
 directory per line — see e.g. `dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt`.
+
+### Post-job checks and output `hadd`
+
+Check if all jobs were succesful and produced the expected output using [scripts/runPostJob.py](scripts/runPostJob.py). It takes the same input txt file as `runNtuplizer.py` and cheks if all the files were produced and if they are broken.
+```bash
+python3 runPostJob.py --input ../dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt --channel mumu --filter="*TTToBsToTauTau*" -o /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
+```
+If all the jobs are succesful you can `hadd` the output with the scripts contained in [scripts/to_runHadd/](scripts/to_runHadd/)

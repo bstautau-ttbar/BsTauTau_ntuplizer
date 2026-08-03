@@ -18,7 +18,7 @@ if __name__ == "__main__":
     usage = 'usage: %prog [options]'
     parser = optparse.OptionParser(usage)
     parser.add_option('-i', '--input',      dest='input',     help='list of input datasets',    default='listSamplesMC2018.txt', type='string')
-    parser.add_option('-c', '--channels',   dest='channels',  help='channel to analyze (emu, etau, mutau)', default='emu', type='string') #FIXME: add list for channels
+    parser.add_option('-c', '--channels',   dest='channels',  help='channel to analyze', default='emu', type='string') #FIXME: add list for channels
     parser.add_option('--filter',           dest='filter',    help='(optional) string to filter input datasets. POSIX regular expression allowed',    default='*', type='string')
     parser.add_option('--isdata',           dest='isdata',    help='flag to run on data (apply GRL and specific trigger selection)', action='store_true')
     parser.add_option('-o', '--output',     dest='output',    help='output directory where to expect job output', default='output', type='string')
