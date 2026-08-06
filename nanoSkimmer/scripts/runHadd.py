@@ -4,7 +4,6 @@ import optparse
 # my imports
 import BsTauTau.nanoSkimmer.logger as log 
 
-#FIXME : make such that picks a unique naming convention
 '''
 (!!!) with haddnano.py you can hadd no more than 1k files
 '''
@@ -35,7 +34,8 @@ def main():
             os.remove(outputFile)
         else:
             sys.exit(1)
-    
+    # loop over directories and hadd
+    log.print_info(" hadd'ing files in %d directories" % len(directories)) 
     tmp_outputFiles = []
     for i, thisDir in enumerate(directories):
         print("\t> %s" % thisDir)
@@ -54,23 +54,31 @@ def main():
         tmp_outputFiles.append(thisOutputFile)
 
     # final hadd
-    log.print_info("\thadding %d files --> %s" % (len(tmp_outputFiles), outputFile))
-    for f in tmp_outputFiles:
-        if not os.path.exists(f) and not options.dryrun:
-            log.print_error(" intermediate output file %s not found, exiting" % f)
-            sys.exit(1)
-    #cmd = "python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
-    cmd = "python3 $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
-    log.print_exe(cmd)
-    if options.dryrun: exit(0)
-    os.system(cmd)
-    if not os.path.exists(outputFile):
-        log.print_error(" final output file %s not found, exiting" % outputFile)
-        sys.exit(1)
-    rmcmd = "rm -f %s" % " ".join(tmp_outputFiles)
-    log.print_exe(rmcmd)
-    os.system(rmcmd)
-    log.print_success(" final output: %s" % outputFile)
+    if len(tmp_outputFiles) == 1:
+        log.print_info("\tonly 1 file, renaming %s --> %s" % (tmp_outputFiles[0], outputFile))
+        if not options.dryrun: os.rename(tmp_outputFiles[0], outputFile)     
+    else:
+        log.print_info("\thadding %d files --> %s" % (len(tmp_outputFiles), outputFile))
+        for f in tmp_outputFiles:
+            if not os.path.exists(f) and not options.dryrun:
+                log.print_error(" intermediate output file %s not found, exiting" % f)
+                sys.exit(1)
+        #cmd = "python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
+        cmd = "python3 $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
+        log.print_exe(cmd)
         
+        if options.dryrun: return 0
+        
+        os.system(cmd)
+        if not os.path.exists(outputFile):
+            log.print_error(" final output file %s not found, exiting" % outputFile)
+            return 1
+        # remove intermediate files
+        rmcmd = "rm -f %s" % " ".join(tmp_outputFiles)
+        log.print_exe(rmcmd)
+        os.system(rmcmd)
+    if os.path.exists(outputFile):
+        log.print_success(" final output: %s" % outputFile)
+
 if __name__ == "__main__":
     sys.exit(main())

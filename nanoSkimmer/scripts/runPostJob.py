@@ -19,6 +19,8 @@ if __name__ == "__main__":
     parser = optparse.OptionParser(usage)
     parser.add_option('-i', '--input',      dest='input',     help='list of input datasets',    default='listSamplesMC2018.txt', type='string')
     parser.add_option('-c', '--channels',   dest='channels',  help='channel to analyze', default='emu', type='string') #FIXME: add list for channels
+    parser.add_option('-y', '--year',       dest='year',      help='year to analyze', default='2018', type='string')
+    parser.add_option('-t', '--tag',        dest='tag',       help='tag to analyze', default='testV0', type='string')
     parser.add_option('--filter',           dest='filter',    help='(optional) string to filter input datasets. POSIX regular expression allowed',    default='*', type='string')
     parser.add_option('--isdata',           dest='isdata',    help='flag to run on data (apply GRL and specific trigger selection)', action='store_true')
     parser.add_option('-o', '--output',     dest='output',    help='output directory where to expect job output', default='output', type='string')
@@ -36,10 +38,15 @@ if __name__ == "__main__":
       sys.exit(1)
     
     # loop over input datasets
-    datasets = open(opt.input).readlines()
+    datasets = open(opt.input).read().splitlines()
     if len(datasets)==0:
       print('ERROR: no dataset found in input file (%s)'%opt.input)
       sys.exit(1)
+
+    output_template=os.path.join(opt.output,
+                        '{channel}_{year}_{tag}',
+                        '{sample_id}',
+                        '{sample_full}_{channel}')
     
     for dataset in datasets:
         if '#' in dataset: continue
@@ -52,23 +59,13 @@ if __name__ == "__main__":
         print('\t [IN] %d files in --- %s'%(n_infiles,indataset))
 
         # output location
-        sufix=''
+        sufix='mc' if not opt.isdata else 'data' # FIXME: better from name?
         prefix=''
-        dataset_name = ''
-        if 'NanoAODv9' in dataset or 'NanoAODAPVv9' in dataset: # data from DAS
-            outname = '_'.join(dataset.split('/')[1:3])
-            year=dataset.split('UL')[1][:4]
-            if 'UL1' in dataset:
-                year="20"+str(dataset.split('UL')[1][:2])
-                sufix='data'
-        elif 'eos' in dataset.split('/'):
-            sufix='mc' 
-            dataset_name = dataset.split('/')[-3]+"_"+dataset.split('/')[-1]
-        if "SingleMu" in dataset_name or "doublemu" in dataset_name or "muonEG" in dataset_name or "egamma" in dataset_name:
-            sufix='data'
-        dataset_name = '_'.join([dataset_name.strip(), channel])
+        year=opt.year
+        #print(dataset.split('/'))
+        dataset_name = dataset.split('/')[-3]+"_"+dataset.split('/')[-1]
 
-        outdataset = os.path.join(opt.output, dataset_name+'/*.root')
+        outdataset = os.path.join(output_template.format(channel=channel, year=year, tag=opt.tag, sample_id=dataset_name.split('_')[0], sample_full=dataset_name),'*.root')
         n_outfiles = len(glob.glob(outdataset))
         print('\t [OUT] %d files in --- %s'%(n_outfiles, outdataset))
 

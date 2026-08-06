@@ -1,16 +1,20 @@
 # $!/bin/bash
 BASE=$CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/
-DATADIR=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
+DATADIR_BASE=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
 OUTDIR=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
-CHANNEL=("mumu" "ee" "e" "mu")
-TOFORCE="--force"
+CHANNEL=("emu" "mumu" "ee" "e" "mu")
+YEAR="2018"
+TAG="testV0"
+#TOFORCE="--force"
 
 for channel in "${CHANNEL[@]}"
 do
-    echo "Processing channel: $channel"
+    echo "---- Processing channel: $channel ----"
+    DATADIR="${DATADIR_BASE}/${channel}_${YEAR}_${TAG}"
+    OUTDIR=$DATADIR
     ## - Bs->tau tau -
-    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau.root $TOFORCE
-    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_${channel}/" -o ${OUTDIR}/${channel}_2018-testV0/ttbarToBsToTauTau-ext.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1_0000_${channel}/" -o ${OUTDIR}/ttbarToBsToTauTau.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/ttbarToBsToTauTau-ext/ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15_0000_${channel}/" -o ${OUTDIR}/ttbarToBsToTauTau_ext.root $TOFORCE
     ### - DY -
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dy_000*_emu/"    -o ${OUTDIR}/DY.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_dyext_000*_emu/" -o ${OUTDIR}/DY_ext.root $TOFORCE
@@ -21,8 +25,8 @@ do
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_tw_000*_emu/"     -o ${OUTDIR}/ST_tW.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_st_antitw_000*_emu/" -o ${OUTDIR}/ST_tW_antitop.root $TOFORCE
     ## - TTBAR -
-    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTTo2L2Nu_RunIIUL18_nanoAODv15_v1_000*_${channel}/"        -o ${OUTDIR}/${channel}_2018-testV0/TTTo2L2Nu.root $TOFORCE
-    #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTToSemiLeptonic_RunIIUL18_nanoAODv15_000*_${channel}/"    -o ${OUTDIR}/${channel}_2018-testV0/TTToSemileptonic.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTTo2L2Nu/TTTo2L2Nu_RunIIUL18_nanoAODv15_000*_${channel}/"        -o ${OUTDIR}/TTTo2L2Nu.root $TOFORCE
+    python3 ${BASE}runHadd.py --inputDir="${DATADIR}/TTToSemiLeptonic/TTToSemiLeptonic_RunIIUL18_nanoAODv15_000*_${channel}/"    -o ${OUTDIR}/TTToSemileptonic.root $TOFORCE
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_tt_had_000*_emu/"       -o ${OUTDIR}/${channel}_2018-testV0/TTToHadronic.root $TOFORCE
     ### - W+jets -
     #python3 ${BASE}runHadd.py --inputDir="${DATADIR}/crab_w_000*_emu/"    -o ${OUTDIR}/W.root $TOFORCE
