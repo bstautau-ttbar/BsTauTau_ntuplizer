@@ -18,12 +18,14 @@ cmsenv
 git cms-init
 
 git cms-addpkg PhysicsTools/NanoAOD
-git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
 git cms-addpkg PhysicsTools/PatAlgos
 git cms-addpkg RecoBTag
 
 # changes with new parT branches
 git cms-merge-topic -u elenavernazza:MyParT_CMSSW_15_0_18
+
+# get nanoAOD-tools repo
+git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
 
 # IMPORTANT: get this repo and save it in BsTauTau folder 
 git clone --recursive git@github.com:bstautau-ttbar/BsTauTau_ntuplizer.git BsTauTau
