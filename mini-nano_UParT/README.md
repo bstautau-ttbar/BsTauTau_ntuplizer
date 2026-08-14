@@ -6,6 +6,7 @@ Copy the model in the right directory
 cd $CMSSW_BASE/src/BsTauTau 
 mkdir -p $CMSSW_BASE/src/RecoBTag/Combined/data/UParTAK4/PUPPI/BsTauTau/
 cp onnx_models/part_run3_bstautau_btag_edge_sumref.onnx $CMSSW_BASE/src/RecoBTag/Combined/data/UParTAK4/PUPPI/BsTauTau/
+cp onnx_models/UParT_v0_mass_reg.onnx $CMSSW_BASE/src/RecoBTag/Combined/data/UParTAK4/PUPPI/BsTauTau/
 ```
 
 ## Run locally
