@@ -1,0 +1,12 @@
+# ---
+# /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/
+# !!! no trailing / in the paths
+# --- 2018 MC samples wit UPartT branch for ditau tagger and jet-mass regeression
+#
+# - SIGNAL -
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15/260825_****/0000
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToBsToTauTau_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15/260825_******/0000
+# - TTBAR -
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15/260825_*****/0000
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0000
+/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0000

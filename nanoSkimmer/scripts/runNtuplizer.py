@@ -28,9 +28,9 @@ def buildCondorFile(opt,FarmDirectory, infodict):
       '''
 executable = {0}/worker_{1}.sh
 
-output     = {0}/output/{1}_$(ProcId).out
-error      = {0}/output/{1}_$(ProcId).err
-log        = {0}/log/{1}_$(ProcId).log
+output     = {0}/output/{1}.out
+error      = {0}/output/{1}.err
+log        = {0}/log/{1}.log
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
@@ -245,7 +245,7 @@ def main():
   command = 'chmod u+x submitter.sh'
   log.print_exe(command)
   os.system(command)
-  cmdtosubmit = 'source submitter.sh'
+  cmdtosubmit =  './submitter.sh'
 
   if not opt.submit:
     log.print_info(f'DRYRUN: to submit the jobs, run: {cmdtosubmit}')

@@ -100,6 +100,8 @@ class Analysis(Module):
         self.out.branch("j_ParTRawTauhtaue",    "F",  lenVar = "nj")
         self.out.branch("j_ParTRawTauhtauh",    "F",  lenVar = "nj")
         self.out.branch("j_ParTRawTauhtaumu",   "F",  lenVar = "nj")
+        self.out.branch("j_ParTRegMass",        "F",  lenVar = "nj") #FIXME better naming
+        self.out.branch("j_ParTRegMassFactor",  "F",  lenVar = "nj") #FIXME better naming
         self.out.branch("j_deepflavB",          "F",  lenVar = "nj")
         self.out.branch("j_upartB",             "F",  lenVar = "nj")
         self.out.branch("j_hadronFlavour",      "I",  lenVar = "nj")
@@ -409,6 +411,10 @@ class Analysis(Module):
         jet_ParTRawTauhtauh     = [jet.btagMyUParTditauh for jet in event.selectedAK4Jets]
         jet_ParTRawTauhtaumu    = [jet.btagMyUParTditaumu for jet in event.selectedAK4Jets]
 
+        # jet mass regression
+        jet_ParTRegMassFactor         = [jet.UParTRegMassCentral for jet in event.selectedAK4Jets]
+        jet_ParTRegMass               = [jet.UParTRegMassCentral*jet.mass for jet in event.selectedAK4Jets]
+
         # JEC and noise filtering #FIXME: to check
         jet_area        = [jet.area for jet in event.selectedAK4Jets]
         jet_corr        = [1./(1.0-jet.rawFactor) for jet in event.selectedAK4Jets] # pT-raw = pT-nano*(1-rawFactor)
@@ -523,6 +529,8 @@ class Analysis(Module):
         self.out.fillBranch("j_ParTRawTauhtaue",  jet_ParTRawTauhtaue)
         self.out.fillBranch("j_ParTRawTauhtauh",  jet_ParTRawTauhtauh)
         self.out.fillBranch("j_ParTRawTauhtaumu", jet_ParTRawTauhtaumu)
+        self.out.fillBranch("j_ParTRegMass",      jet_ParTRegMass)
+        self.out.fillBranch("j_ParTRegMassFactor",jet_ParTRegMassFactor)
 
         self.out.fillBranch("j_chEmEF",           jet_chEmEF)
         self.out.fillBranch("j_chHEF",            jet_chHEF)

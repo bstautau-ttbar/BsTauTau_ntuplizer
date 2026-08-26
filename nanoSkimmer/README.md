@@ -1,19 +1,12 @@
 # BsTauTauAnalyzer
 
-## Setup
+```bash
+cd $CMSSW_BASE/src/BsTauTau/nanoSkimmer
+```
 
-```
-mkdir MyWorkingDirectory
-cd MyWorkingDirectory
-cmsrel CMSSW_15_0_10
-cd CMSSW_15_0_10/src/
-cmsenv
-git cms-init
-git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
-git clone https://github.com/cecilecaillol/BsTauTauAnalyzer.git -b Run3
-scram b -j 8
-```
-> IMPORTANT In order to add **pileup weights** do the following (currently working only for Run2 UL)
+## Include pilup weights
+
+In order to add **pileup weights** do the following (currently working only for Run2 UL)
 
 Edit `$CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py` insert this line after `L2`:
 ```python
