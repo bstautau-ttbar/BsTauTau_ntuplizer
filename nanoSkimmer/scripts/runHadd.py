@@ -1,12 +1,16 @@
 import os, sys
 import glob
 import optparse
+import ROOT
+ROOT.gROOT.SetBatch(True)
 # my imports
 import BsTauTau.nanoSkimmer.logger as log 
+from .runPostJob import check_ROOTfile
 
 '''
 (!!!) with haddnano.py you can hadd no more than 1k files
 '''
+
 def main():
     parser = optparse.OptionParser()
     parser.add_option("-i", "--inputDir", dest="inputDir", help="input directory")
@@ -34,6 +38,7 @@ def main():
             os.remove(outputFile)
         else:
             sys.exit(1)
+    
     # loop over directories and hadd
     log.print_info(" hadd'ing files in %d directories" % len(directories)) 
     tmp_outputFiles = []
@@ -51,6 +56,11 @@ def main():
         cmd = "python3 $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/haddnano.py %s %s" % (thisOutputFile, inFiles)
         log.print_exe(cmd)
         if not options.dryrun: os.system(cmd)
+        thisCheck = check_ROOTfile(thisOutputFile)
+        # check output
+        if not thisCheck["ok"] :
+            log.print_error(" intermediate output file %s is not valid, exiting" % thisOutputFile)
+            sys.exit(1)
         tmp_outputFiles.append(thisOutputFile)
 
     # final hadd
@@ -66,13 +76,23 @@ def main():
         #cmd = "python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
         cmd = "python3 $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/haddnano.py %s %s" % (outputFile, " ".join(tmp_outputFiles))
         log.print_exe(cmd)
-        
         if options.dryrun: return 0
         
         os.system(cmd)
         if not os.path.exists(outputFile):
             log.print_error(" final output file %s not found, exiting" % outputFile)
             return 1
+        
+        file = ROOT.TFile.Open(outputFile)
+        if file.IsZombie():
+            log.print_error(" final output file %s is zombie, exiting" % outputFile)
+            return 1
+        else :
+            tree = file.Get('Runs')
+            if tree.GetEntries()==0: 
+                log.print_error(" final output file %s is empty, exiting" % outputFile)
+                return 1
+        file.Close()
         # remove intermediate files
         rmcmd = "rm -f %s" % " ".join(tmp_outputFiles)
         log.print_exe(rmcmd)

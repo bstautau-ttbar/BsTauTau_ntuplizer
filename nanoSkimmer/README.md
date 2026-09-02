@@ -48,6 +48,13 @@ Each job is written into a
 `FarmLocalNtuple_<year>[_<tag>]_<timestamp>/` directory (condor `.sub` + worker script + logs),
 alongside a `submitter.sh` that submits them all.
 
+> IMPORTANT : Activate the proxy and move it to the /tmp forlder before running on condor
+```bash
+voms-proxy-init --voms cms --valid 168:00
+mv /tmp/x509up_u147779 ~/X509_USER_PROXY
+export X509_USER_PROXY=~/X509_USER_PROXY
+echo $X509_USER_PROXY
+```
 ### Options
 
 | Option | Description | Default |
@@ -68,7 +75,7 @@ alongside a `submitter.sh` that submits them all.
 cd scripts
 voms-proxy-init --voms=cms --valid=48:0
 python3 runNtuplizer.py \
-  --input ../dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt \
+  --input ../dataset/mc/nanoAODmc2018_ParTedge_tagMreg_Aug26-demo.txt \
   -y 2018 \
   --out /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/ \
   -n 2
@@ -80,12 +87,12 @@ Without `-s`/`--submit` nothing is actually sent to condor — inspect the gener
 files, then either add `-s` to the command or run `source submitter.sh` yourself.
 
 Input dataset lists live under `dataset/mc/` (MC) and `dataset/` (data), one EOS
-directory per line — see e.g. `dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt`.
+directory per line — see e.g. `dataset/mc/nanoAODmc2018_ParTedge_tagMreg_Aug26-demo.txt`.
 
 ### Post-job checks and output `hadd`
 
 Check if all jobs were succesful and produced the expected output using [scripts/runPostJob.py](scripts/runPostJob.py). It takes the same input txt file as `runNtuplizer.py` and cheks if all the files were produced and if they are broken.
 ```bash
-python3 runPostJob.py --input ../dataset/mc/nanoAODmc2018_ParTedge_Jul26-demo.txt --channel mumu --filter="*TTToBsToTauTau*" -o /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
+python3 runPostJob.py --input ../dataset/mc/nanoAODmc2018_ParTedge_tagMreg_Aug26-demo.txt --channel mumu --filter="*TTToBsToTauTau*" -o /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
 ```
 If all the jobs are succesful you can `hadd` the output with the scripts contained in [scripts/to_runHadd/](scripts/to_runHadd/)

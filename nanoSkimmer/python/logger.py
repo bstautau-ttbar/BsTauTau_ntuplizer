@@ -30,8 +30,13 @@ def print_info(message, logger=None):
         logger.write(message + '\n')
 
 
-def print_success(message, logger=None):
+def print_done(message, logger=None):
     print("{}[DONE!]{} {}".format(color_text.GREEN, color_text.END, message))
+    if logger:
+        logger.write(message + '\n')
+
+def print_success(message, logger=None):
+    print("{}[OK!]{} {}".format(color_text.GREEN, color_text.END, message))
     if logger:
         logger.write(message + '\n')
 

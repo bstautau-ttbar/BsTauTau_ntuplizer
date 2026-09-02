@@ -20,7 +20,7 @@ def buildCondorFile(opt,FarmDirectory, infodict):
 
 # ---- condor submission file -----
   condorFile=os.path.join(FarmDirectory, f'condorsub_{jobname}.sub')
-  print(f" > {os.path.basename(condorFile)}")
+  print(f"\t> {os.path.basename(condorFile)}")
   
   with open (condorFile,'w') as condor:
 
@@ -162,13 +162,14 @@ def split_input(opt, FarmDirectory):
      
       output_full=output_template.format(channel=channel, year=year, tag=opt.tag, sample_id=dataset_name.split('_')[0], sample_full=dataset_name)
       os.makedirs(output_full, exist_ok=True)
+      print(f'[OUT] {output_full}')
       
       # apply filter to data: trigger and GRL
       if opt.isdata:
         filter=eracfg.ANALYSISCUT['data'][year][channel]
       else:
         filter=eracfg.ANALYSISCUT['mc'][year][channel]
-      print (f"   ({year} | {channel}) filter : {filter} ")
+      print (f"\t({year} | {channel}) FILTER : {filter} ")
 
       sample_dict ={
         'name'      : '_'.join([dataset_name, channel]),

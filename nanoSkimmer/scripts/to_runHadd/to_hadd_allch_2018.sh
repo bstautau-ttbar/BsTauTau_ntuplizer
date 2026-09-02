@@ -1,11 +1,10 @@
 # $!/bin/bash
 BASE=$CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/
-DATADIR_BASE=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
-OUTDIR=/eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_skim/
-#CHANNEL=("emu" "mumu" "ee" "e" "mu")
-CHANNEL=("emu")
+DATADIR_BASE=/eos/cms/store/cmst3/group/bpark/bstautau/nanov15_skim/
+CHANNEL=("emu" "mumu" "ee" "e" "mu")
+CHANNEL=("e")
 YEAR="2018"
-TAG="test_tagMregV0"
+TAG="tagMreg"
 #TOFORCE="--force"
 
 for channel in "${CHANNEL[@]}"
