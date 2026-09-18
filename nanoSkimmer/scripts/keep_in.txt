@@ -46,6 +46,7 @@ keep Muon*
 keep Electron*
 keep Tau*
 keep Jet*
+keep GenJet*
 keep PV_*
 keep TrigObj*
 

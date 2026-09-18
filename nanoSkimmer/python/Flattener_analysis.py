@@ -10,15 +10,37 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collect
 
 ### Proton selector be replaced by preprocessing module
 from BsTauTau.nanoSkimmer.objectSelector import ElectronSelector, MuonSelector, TauSelector, GenParticleSelector
+from BsTauTau.nanoSkimmer.corrections import jme_corrections
 
 DEBUGMODE=False
 class Analysis(Module):
     def __init__(self, channel, isMC, year):
-        self.channel       = channel
-        self.isMC          = isMC
-        self.year          = year
-
+        
+        self.channel         = channel
+        self.isMC            = isMC
+        self.year            = year
+        
+        # JERC
+        self.jme_corrections = jme_corrections.get(year, {})
+        self.corr_jvm        = _core.CorrectionSet.from_file(self.jme_corrections.get("jetvetomap", {}).get("file", ""))[self.jme_corrections.get("jetvetomap", {}).get("tag", "")]
+        
+        # JES
+        jes_tag_tmpl                = self.jme_corrections.get("jes", {}).get("tag", "")
+        corrSet_jes                 = _core.CorrectionSet.from_file(self.jme_corrections.get("jes", {}).get("file", ""))
+        self.corr_jes_L1FastJet     =  corrSet_jes[jes_tag_tmpl.format(mc="MC" if self.isMC else "DATA", level="L1FastJet")] # PU offset (=1 for puppi jets)
+        self.corr_jes_L2Relative    =  corrSet_jes[jes_tag_tmpl.format(mc="MC" if self.isMC else "DATA", level="L2Relative")] # simulation-response (!=1)
+        self.corr_jes_L3Absolute    =  corrSet_jes[jes_tag_tmpl.format(mc="MC" if self.isMC else "DATA", level="L3Absolute")] # simulation-response (=1)
+        self.corr_jes_L2L3Residual  =  corrSet_jes[jes_tag_tmpl.format(mc="MC" if self.isMC else "DATA", level="L2L3Residual")] # residual percent level for data (!=1 for data, =1 for MC)
+        
+        # JER
+        jer_tag_tmpl              = self.jme_corrections.get("jer", {}).get("tag", "")
+        corrSet_jer               = _core.CorrectionSet.from_file(self.jme_corrections.get("jer", {}).get("file", ""))
+        self.corr_jer_ptres       = corrSet_jer[jer_tag_tmpl.format(what="PtResolution")]
+        self.corr_jer_sf          = corrSet_jer[jer_tag_tmpl.format(what="ScaleFactor")]
+        
+        
         cmssw=os.environ['CMSSW_BASE']
+        
         pass
 
     def beginJob(self):
@@ -86,10 +108,21 @@ class Analysis(Module):
         self.out.branch("pass_jvm",             "I")
 
         self.out.branch("nj",                   "I")
+        self.out.branch("j_pass_jvm" ,          "I",  lenVar = "nj")
         self.out.branch("j_pt",                 "F",  lenVar = "nj")
+        self.out.branch("j_uncor_pt",                 "F",  lenVar = "nj")
+        self.out.branch("j_raw_pt",             "F",  lenVar = "nj")
+        self.out.branch("j_jesF",               "F",  lenVar = "nj")
+        self.out.branch("j_jerF",               "F",  lenVar = "nj")
+        self.out.branch("j_jes_pt",             "F",  lenVar = "nj")
+        self.out.branch("j_jer_pt",             "F",  lenVar = "nj")
         self.out.branch("j_eta",                "F",  lenVar = "nj")
         self.out.branch("j_phi",                "F",  lenVar = "nj")
         self.out.branch("j_m",                  "F",  lenVar = "nj")
+        self.out.branch("j_raw_m",              "F",  lenVar = "nj")
+        self.out.branch("j_uncor_m",            "F",  lenVar = "nj")
+        self.out.branch("j_jer_m",               "F",  lenVar = "nj")
+        self.out.branch("j_id",                 "I",  lenVar = "nj")
         self.out.branch("j_area",               "F",  lenVar = "nj")
         self.out.branch("j_corr",               "F",  lenVar = "nj")
         self.out.branch("j_puid",               "F",  lenVar = "nj")
@@ -105,7 +138,6 @@ class Analysis(Module):
         self.out.branch("j_deepflavB",          "F",  lenVar = "nj")
         self.out.branch("j_upartB",             "F",  lenVar = "nj")
         self.out.branch("j_hadronFlavour",      "I",  lenVar = "nj")
-
         self.out.branch("j_chEmEF",           "F",  lenVar = "nj")
         self.out.branch("j_chHEF",            "F",  lenVar = "nj")
         self.out.branch("j_muEF",             "F",  lenVar = "nj")
@@ -137,7 +169,8 @@ class Analysis(Module):
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         pass
-
+    
+    # ------ GEN PARTICLES ------ 
     def selectGenParticles(self, event):
 
         event.selectedGenParticles = []
@@ -145,6 +178,7 @@ class Analysis(Module):
         for genp in genparticles:
             event.selectedGenParticles.append(genp)
 
+    # ------ ELECTRONS ------ 
     def selectElectrons(self, event, elSel):
 
         event.selectedElectrons = []
@@ -162,6 +196,7 @@ class Analysis(Module):
             
         event.selectedElectrons.sort(key=lambda x: x.pt, reverse=True)
 
+    # ------ MUONS ------ 
     def selectMuons(self, event, muSel):
         ## access a collection in nanoaod and create a new collection based on this
 
@@ -174,6 +209,7 @@ class Analysis(Module):
 
         event.selectedMuons.sort(key=lambda x: x.pt, reverse=True)
 
+    # ------ TAU ------ 
     def selectTaus(self, event, tauSel):
 
         event.selectedTaus = []
@@ -190,19 +226,119 @@ class Analysis(Module):
             event.selectedTaus.append(tau)
 
         event.selectedTaus.sort(key=lambda x: x.pt, reverse=True)
+    
+    # ------ JETS ------ 
+    # recalculate jet ID for nanoAODv15 -> https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13TeVUL#NanoAODv15
+    #   pass tightJet ID fail tightLepVeto ID 
+    def claculateJetID(self,jet):
+        jet_id = 0
+        passJetIDTight   = False
+        passJetIDTightLepVeto = False
+        
+        # -- 2016 --
+        if (self.year == "2016") or (self.year == "2016pre") or (self.year == "2016post"):
+            if (abs(jet.eta) <= 2.5): 
+                passJetIDTight = (jet.neHEF < 0.9) and (jet.neEmEF < 0.9) and (jet.chMultiplicity+jet.neMultiplicity > 1) and (jet.chHEF > 0.0) and (jet.chMultiplicity > 0)
+            
+            if (abs(jet.eta) <= 2.4): passJetIDTightLepVeto = passJetIDTight and (jet.muEF < 0.8) and (jet.chEmEF < 0.8)
+            else : passJetIDTightLepVeto = passJetIDTight   
+        
+        # 2017 and 2018
+        elif (self.year == "2017") or (self.year == "2018"):
+            if (abs(jet.eta) <= 2.6): 
+                passJetIDTight = (jet.neHEF < 0.9) and (jet.neEmEF < 0.9) and (jet.chMultiplicity+jet.neMultiplicity > 1) and (jet.chHEF > 0.0) and (jet.chMultiplicity > 0)
+            
+            if (abs(jet.eta) <= 2.7): passJetIDTightLepVeto = passJetIDTight and (jet.muEF < 0.8) and (jet.chEmEF < 0.8)
+            else : passJetIDTightLepVeto = passJetIDTight
+        
+        # 2022 - 2026 FIXME: check if this is correct https://twiki.cern.ch/twiki/bin/view/CMS/JetID13p6TeV#Jet_ID_implementation_with_NanoA
+        if ("202" in self.year):
+            if (abs(jet.eta) <= 2.6): 
+                passJetIDTight = (jet.neHEF < 0.99) and (jet.neEmEF < 0.90) and (jet.chMultiplicity+jet.neMultiplicity > 1) and (jet.chHEF > 0.01) and (jet.chMultiplicity > 0)
+            
+            if (abs(jet.eta) <= 2.7): passJetIDTightLepVeto = passJetIDTight and (jet.muEF < 0.8) and (jet.chEmEF < 0.8)
+            else : passJetIDTightLepVeto = passJetIDTight
+
+        if (passJetIDTight and not passJetIDTightLepVeto): jet_id = 2
+        elif (passJetIDTight and passJetIDTightLepVeto): jet_id = 6
+        if DEBUGMODE: print(" [Jet ID] pt {pt:.2f} eta {eta:.2f} phi {phi:.2f} | tightID={tight} tightLepVetoID={tightlep} -> jet_id={jetid}".format(pt=jet.pt, eta=jet.eta, phi=jet.phi, tight=passJetIDTight, tightlep=passJetIDTightLepVeto, jetid=jet_id))
+        return jet_id
+
+    def evalJetVetoMap(self, jet):
+
+        return int(self.corr_jvm.evaluate("jetvetomap", jet.eta, jet.phi) == 0)
+    
+    def evalJES(self, jet, rho, runumber):
+        
+        # undo JEC
+        rawF = (1.0-jet.rawFactor)
+        jet.raw_pt   = jet.pt*rawF
+        jet.raw_mass = jet.mass*rawF
+
+        # JEC
+        CL1FastJet      = self.corr_jes_L1FastJet.evaluate(jet.area, jet.eta, jet.pt, rho)
+        CL2Relative     = self.corr_jes_L2Relative.evaluate(jet.eta, jet.pt)
+        CL3Absolute     = self.corr_jes_L3Absolute.evaluate(jet.eta, jet.pt)
+        CL2L3Residual   = self.corr_jes_L2L3Residual.evaluate(jet.eta, jet.pt) if self.isMC else self.corr_jes_L2L3Residual.evaluate(jet.eta, jet.pt, runumber) 
+    
+        # apply JEC
+        jet.jes_factor  = CL1FastJet*CL2Relative*CL3Absolute*CL2L3Residual
+        jet.jes_pt   = jet.raw_pt*jet.jes_factor
+
+        if DEBUGMODE :
+            print(" [JEC] rawFactor {rawF:.3f} raw_pt {raw_pt:.2f} raw_mass {raw_mass:.2f}".format( rawF=jet.rawFactor, raw_pt=jet.raw_pt, raw_mass=jet.raw_mass))
+            print(" [JEC] CL1FastJet={CL1FastJet:.3f} CL2Relative={CL2Relative:.3f} CL3Absolute={CL3Absolute:.3f} CL2L3Residual={CL2L3Residual:.3f} --> {jes_factor:.3f}".format(CL1FastJet=CL1FastJet, CL2Relative=CL2Relative, CL3Absolute=CL3Absolute, CL2L3Residual=CL2L3Residual, jes_factor=jet.jes_factor))
+
+
+    def evalJER(self, jet, genjets, rho, inplace = True):
+
+        if not hasattr(jet, "jes_pt") : print("ERROR : evaluate JES before evaluating JER")
+
+        sf_jer     = self.corr_jer_sf.evaluate(jet.eta, jet.pt)
+        rel_pt_res = self.corr_jer_ptres.evaluate(jet.eta, jet.pt, rho)
+        
+        jet.gen_pt = -1.0
+        for genjet in genjets:
+            if (jet.p4().DeltaR(genjet.p4()) < 0.2) and (abs(jet.jes_pt - genjet.pt) < 3*rel_pt_res*jet.pt):
+                jet.gen_pt = genjet.pt
+                if DEBUGMODE: print(" [JER] gen-pt {gen_pt:.2f} | dR {deltaR:.3f} | dPt={deltaPt:.3f}".format(gen_pt=genjet.pt, deltaR=jet.p4().DeltaR(genjet.p4()), deltaPt=abs(jet.jes_pt - genjet.pt)))
+                break
+
+        if not self.isMC: # no JER for data
+            cjer = 1.0
+        elif jet.gen_pt >= 0: # matched to gen jet
+            cjer = 1. + (sf_jer - 1.) * (jet.gen_pt - jet.jes_pt) / jet.jes_pt if jet.gen_pt > 0 else 1.
+        else: # unmatched jet
+            cjer = 1. + math.sqrt(max(sf_jer**2 - 1., 0.0)) * ROOT.gRandom.Gaus(0, rel_pt_res)
+        
+        jet.jer_factor = cjer
+        jet.jer_pt     = jet.jes_pt*cjer
+        jet.jer_mass   = jet.mass*cjer
+        if inplace:
+            jet.pt   = jet.jer_pt
+            jet.mass = jet.jer_mass
+
+        if DEBUGMODE: print(" [JER] sf_jer={sf_jer:.3f} rel_pt_res={rel_pt_res:.3f} | cjer={cjer:.3f} jer_pt={jer_pt:.2f} jer_mass={jer_mass:.2f}".format(sf_jer=sf_jer, rel_pt_res=rel_pt_res, cjer=cjer, jer_pt=jet.jer_pt, jer_mass=jet.jer_mass))
 
     def selectAK4Jets(self, event):
         ## Selected jets: pT>30, |eta|<4.7, pass tight ID
 
         event.selectedAK4Jets = []
         ak4jets = Collection(event, "Jet")
+        genjets = Collection(event, "GenJet") if self.isMC else []
         for j in ak4jets:
             if abs(j.eta) > 2.5:      # 5.191 -> extended eta range to value supported by JME (rolled back to compare Run2 nanov15 and v9)
                 continue
+            # jet-veto map
+            j.pass_jvm = self.evalJetVetoMap(j)
 
-            # in Run3 PU ID is not recommended -> https://twiki.cern.ch/twiki/bin/view/CMS/JetID
-            #if not self.corr_jetid.evaluate(j.eta, j.chHEF, j.neHEF, j.chEmEF, j.neEmEF, j.muEF, j.chMultiplicity, j.neMultiplicity, j.chMultiplicity+j.neMultiplicity): continue #pass jetID, need to recalculate on top of NanoAODv15
-
+            # jet definitions
+            j.id       = self.claculateJetID(j)
+            j.uncor_pt   = j.pt
+            j.uncor_mass = j.mass
+            self.evalJES(j, event.Rho_fixedGridRhoFastjetAll, event.run)
+            self.evalJER(j, genjets, event.Rho_fixedGridRhoFastjetAll)
+            
 
             #check overlap with selected leptons 
             deltaR_to_leptons=[ j.p4().DeltaR(lep.p4()) for lep in event.selectedMuons+event.selectedElectrons]
@@ -290,11 +426,13 @@ class Analysis(Module):
         self.selectAK4Jets(event)
         if len(event.selectedAK4Jets)<1: return False
         event.nbjetL = 0 # FIXME : include b-tagging requirement (?)
+
+        # jet-veto map to the event
+        event.pass_jvm = 1
+        if "202" in self.year:
+            event.pass_jvm = np.prod([j.pass_jvm for j in event.selectedAK4Jets])
+        if DEBUGMODE: print("  +Event jet-veto map: pass_jvm={toveto}".format(toveto=event.pass_jvm))
         
-        # jet veto map (veto the entire event in Run3, veto only the jet in Run2)
-        event.pass_jvm=True
-        #for j in event.selectedAK4Jets:
-        #    if self.corr_jvm.evaluate("jetvetomap",j.eta,j.phi)!=0: event.pass_jvm=False
         
     # ---- GEN LEVEL ----  	
 
@@ -512,11 +650,22 @@ class Analysis(Module):
 
     	# jet branches
         self.out.fillBranch("nj" ,                len(event.selectedAK4Jets))
+        self.out.fillBranch("j_pass_jvm" ,        [j.pass_jvm for j in event.selectedAK4Jets])
         self.out.fillBranch("j_pt",               jet_pt)
+        self.out.fillBranch("j_uncor_pt",          [jet.uncor_pt for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_raw_pt",           [jet.raw_pt for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_jesF",             [jet.jes_factor for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_jerF",             [jet.jer_factor for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_jes_pt",           [jet.jes_pt for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_jer_pt",           [jet.jer_pt for jet in event.selectedAK4Jets])
         self.out.fillBranch("j_eta",              jet_eta)
         self.out.fillBranch("j_phi",              jet_phi)
         self.out.fillBranch("j_m",                jet_m)
+        self.out.fillBranch("j_uncor_m",          [jet.uncor_mass for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_raw_m",            [jet.raw_mass for jet in event.selectedAK4Jets])
+        self.out.fillBranch("j_jer_m",            [jet.jer_mass for jet in event.selectedAK4Jets])
         self.out.fillBranch("j_puid",             jet_puid)
+        self.out.fillBranch("j_id",               [j.id for j in event.selectedAK4Jets])
         self.out.fillBranch("j_area",             jet_area)
         self.out.fillBranch("j_corr",             jet_corr)
         self.out.fillBranch("j_deepflavB",        jet_deepflavB)

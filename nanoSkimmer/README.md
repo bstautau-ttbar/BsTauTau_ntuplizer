@@ -33,7 +33,7 @@ Run the skimmer command locally, e.g. for a signal MC file in the `emu` $t\bar t
 ```bash
 python3 $CMSSW_BASE/src/PhysicsTools/NanoAODTools/scripts/nano_postproc.py \
  output \
- /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/crabjobs_2026Jul11/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15_v1/260710_222737/0000/step_nanoAODv15_10.root \
+ /eos/cms/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15/260825_103550/0000/step_nanoAODv15_10.root \
  --bi $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_in.txt \
  --bo $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/keep_out.txt \
  -c "(nMuon>0&&nElectron>0&&nJet>0)" -I BsTauTau.nanoSkimmer.Flattener_analysis analysis_emumc2018 -N 1000
