@@ -13,65 +13,57 @@ Script to check the jobs from the flattener
 # FIXME : check the output files and resubmit only the failed ones
 '''
 DEEP_CHECK = False
+DEBUG      = False
 
 def check_ROOTfile(filename, trees=('Runs',), hists=('autoPU',)):
     result = {
-        'zero_size': False,
-        'zombie': False,
-        'missing_trees': [],
-        'empty_trees': [],
-        'missing_hists': [],
         'ok': False,
         'reason': '',
+        'missing_trees': [],
+        'missing_hists': [],
     }
     # empty file
     try:
-        size = os.path.getsize(filename)
+        if os.path.getsize(filename) < 200:  # 200 bytes is the minimum size for a valid ROOT file
+            result['reason'] = 'zero-size file'; return result
     except OSError as e:
         result['reason'] = 'cannot stat file (%s)' % e
         return result
-    if size < 1000:
-        result['zero_size'] = True
-        result['reason'] = 'zero-size file'
-        return result
-    # zombie
-    tfile = ROOT.TFile.Open(filename)
-    if tfile is None:
-        result['zombie'] = True
-        result['reason'] = 'TFile.Open returned null'
-        return result
-    if tfile.IsZombie():
-        result['zombie'] = True
-        result['reason'] = 'zombie file'
-        tfile.Close()
-        return result
-    # no entries in Runs
-    for treename in trees:
-        tree = tfile.Get(treename)
-        if not tree or not isinstance(tree, ROOT.TTree):
-            result['missing_trees'].append(treename)
-            continue
-        if tree.GetEntries() == 0:
-            result['empty_trees'].append(treename)
-    tfile.Close()
-    for histname in hists:
-        obj = tfile.Get(histname)
-        if not obj or not isinstance(obj, ROOT.TH1):
-            result['missing_hists'].append(histname)
-    tfile.Close()
     
-    if result['missing_trees'] or result['empty_trees']:
-        parts = []
-        if result['missing_trees']:
-            parts.append('missing tree(s) %s' % result['missing_trees'])
-        if result['empty_trees']:
-            parts.append('empty tree(s) %s' % result['empty_trees'])
-        if result['missing_hists']:
-            parts.append('missing hist(s) %s' % result['missing_hists'])
-        result['reason'] = ', '.join(parts)
-        return result
- 
-    result['ok'] = True
+    # broken
+    tfile = ROOT.TFile.Open(filename)
+    if not tfile or tfile.IsZombie():
+        result['reason'] = 'zombie / cannot open'; return result
+    
+    problems = []
+    if tfile.TestBit(ROOT.TFile.kRecovered):
+        problems.append('file recovered (not cleanly closed)')
+    if tfile.GetEND() > tfile.GetSize():
+        problems.append(f'file truncated (END {tfile.GetEND()} > SIZE {tfile.GetSize()})')
+    
+    
+    # every key must be readable
+    for key in tfile.GetListOfKeys():
+        if not key.ReadObj():
+            problems.append(f'cannot read key {key.GetName()} ({key.GetClassName()})')
+    
+    for tn in trees:
+        tree = tfile.Get(tn)
+        if not tree or not isinstance(tree, ROOT.TTree):
+            problems.append(f'missing tree {tn}')
+            continue
+        if tn == 'Runs' and tree.GetEntries() == 0:
+            problems.append(f'empty tree {tn}')
+    
+    for hn in hists:
+        hist = tfile.Get(hn)
+        if not hist or not isinstance(hist, ROOT.TH1):
+            problems.append(f'missing histogram {hn}')
+            result['missing_hists'].append(hn)
+    
+    tfile.Close()
+    result['ok'] = len(problems) == 0
+    result['reason'] = ' | '.join(problems)
     return result
 
 
@@ -79,9 +71,9 @@ if __name__ == "__main__":
     usage = 'usage: %prog [options]'
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input',    dest='input',    help='list of input datasets',
-                        default='listSamplesMC2018.txt', type=str)
+                        required=True, type=str)
     parser.add_argument('-c', '--channels', dest='channels', help='list of channels to analyze (e.g. emu ee mumu e mu)',
-                        default=['emu'], nargs='+', type=str)
+                        required=True, nargs='+', type=str)
     parser.add_argument('-y', '--year',     dest='year',     help='year to analyze',
                         default='2018', type=str)
     parser.add_argument('-t', '--tag',      dest='tag',      help='tag to analyze',
@@ -147,7 +139,7 @@ if __name__ == "__main__":
 
             if n_outfiles == 0:
                 log.print_error('No output file found for dataset %s'%dataset_name)
-                exit(1)
+                continue
             
             if n_outfiles < n_infiles:
                 log.print_warning(' Missing %d files (input %d, output %d)'%(n_infiles-n_outfiles, n_infiles, n_outfiles))
@@ -160,14 +152,16 @@ if __name__ == "__main__":
             bad_files = []
             for filename in glob.glob(outdataset):
                 check = check_ROOTfile(filename)
+                if DEBUG: print(check)
                 if not check['ok']:
                     bad_files.append((filename, check['reason']))
                     # FIXME : add here a way to resubmit the job for this file
+                else: tot_goodfiles += 1
 
             if bad_files:
                 log.print_error(' %d bad file(s) in job output'%len(bad_files))
                 for filename, reason in bad_files:
-                    print('\t %s  [%s]'%(filename, reason))
+                    print(f'\t{filename} --> {reason}]')
                 tot_toresub += len(bad_files)
             else:
                 log.print_success(' All files (%d) are good in job output'%n_outfiles)

@@ -29,11 +29,20 @@ def zeroFill(tree, brName, brObj, allowNonBool=False):
             b.Fill()
         b.ResetAddress()
 
+def getKey(fh, name):
+    for key in fh.GetListOfKeys():
+        if not key:
+            print("ERROR: key '%s' not found in %s" % (name, fh.GetName()))
+            print("       keys present: %s" % sorted(k.GetName() for k in fh.GetListOfKeys()))
+            print("       file size: %d, recovered: %s" % (fh.GetSize(), fh.TestBit(ROOT.TFile.kRecovered)))
+            sys.exit(2)
+    return key.ReadObj()
+
 
 fileHandles = []
 goFast = True
 for fn in files:
-    print("Adding file", str(fn))
+    print("+ ", str(fn))
     fileHandles.append(ROOT.TFile.Open(fn))
     if fileHandles[-1].GetCompressionSettings() != fileHandles[0].GetCompressionSettings():
         goFast = False
@@ -73,7 +82,8 @@ for e in fileHandles[0].GetListOfKeys():
                                  for x in otherObj.GetListOfBranches()])
             missingBranches = list(branchNames - otherBranches)
             additionalBranches = list(otherBranches - branchNames)
-            print("missing: " + str(missingBranches) + "\n Additional: " + str(additionalBranches))
+            if len(missingBranches) > 0 or len(additionalBranches) > 0:
+                print("\t-missing braches: " + str(missingBranches) + "\n\t+additional branches: " + str(additionalBranches))
             for br in missingBranches:
                 # fill "Other"
                 zeroFill(otherObj, br, obj.GetListOfBranches().FindObject(br))
@@ -88,7 +98,8 @@ for e in fileHandles[0].GetListOfKeys():
                                  for x in otherObj.GetListOfBranches()])
             missingBranches = list(branchNames - otherBranches)
             additionalBranches = list(otherBranches - branchNames)
-            print("missing: " + str(missingBranches) + "\n Additional: " + str(additionalBranches))
+            if len(missingBranches) > 0 or len(additionalBranches) > 0:
+                print("\t-missing braches: " + str(missingBranches) + "\n\t+additional branches: " + str(additionalBranches))
             for br in missingBranches:
                 # fill "Other"
                 zeroFill(otherObj, br, obj.GetListOfBranches(

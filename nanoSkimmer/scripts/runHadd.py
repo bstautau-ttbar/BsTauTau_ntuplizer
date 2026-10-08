@@ -5,7 +5,8 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 # my imports
 import BsTauTau.nanoSkimmer.logger as log 
-from .runPostJob import check_ROOTfile
+from runPostJob import check_ROOTfile
+
 
 '''
 (!!!) with haddnano.py you can hadd no more than 1k files
