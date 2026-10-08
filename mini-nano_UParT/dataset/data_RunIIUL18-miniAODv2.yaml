@@ -1,0 +1,91 @@
+common:
+  mc:
+    splitting: 1
+    globaltag: 150X_dataRun2_v1
+    campaign: RunIIUL18
+
+samples:
+# SingleMuon
+  SingleMuon_2018A:
+    dataset: /SingleMuon/Run2018A-UL2018_MiniAODv2_GT36-v2/MINIAOD
+    isMC: False
+    splitting: 1
+    name : SingleMuon_2018A
+  SingleMuon_2018B:
+    dataset: /SingleMuon/Run2018B-UL2018_MiniAODv2_GT36-v2/MINIAOD
+    isMC: False
+    splitting: 1
+    name : SingleMuon_2018B
+  SingleMuon_2018C:
+    dataset: /SingleMuon/Run2018C-UL2018_MiniAODv2_GT36-v3/MINIAOD
+    isMC: False
+    splitting: 1
+    name : SingleMuon_2018C
+  SingleMuon_2018D:
+    dataset: /SingleMuon/Run2018D-UL2018_MiniAODv2_GT36-v2/MINIAOD
+    isMC: False
+    splitting: 1
+    name : SingleMuon_2018D
+# DoubleMuon
+  DoubleMuon_2018A:
+    dataset: /DoubleMuon/Run2018A-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : DoubleMuon_2018A
+  DoubleMuon_2018B:
+    dataset: /DoubleMuon/Run2018B-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : DoubleMuon_2018B
+  DoubleMuon_2018C:
+    dataset: /DoubleMuon/Run2018C-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : DoubleMuon_2018C
+  DoubleMuon_2018D:
+    dataset: /DoubleMuon/Run2018D-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : DoubleMuon_2018D
+# MuonEG
+  MuonEG_2018A:
+    dataset: /MuonEG/Run2018A-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : MuonEG_2018A
+  MuonEG_2018B:
+    dataset: /MuonEG/Run2018B-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : MuonEG_2018B
+  MuonEG_2018C:
+    dataset: /MuonEG/Run2018C-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : MuonEG_2018C
+  MuonEG_2018D:
+    dataset: /MuonEG/Run2018D-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : MuonEG_2018D
+# EGamma
+  EGamma_2018A:
+    dataset: /EGamma/Run2018A-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : EGamma_2018A
+  EGamma_2018B:
+    dataset: /EGamma/Run2018B-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : EGamma_2018B
+  EGamma_2018C:
+    dataset: /EGamma/Run2018C-UL2018_MiniAODv2_GT36-v1/MINIAOD
+    isMC: False
+    splitting: 1
+    name : EGamma_2018C
+  EGamma_2018D:
+    dataset: /EGamma/Run2018D-UL2018_MiniAODv2_GT36-v3/MINIAOD
+    isMC: False
+    splitting: 1
+    name : EGamma_2018D

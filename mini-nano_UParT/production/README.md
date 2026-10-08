@@ -1,11 +1,11 @@
 # CRAB production
-This sources the CRAB client (`/cvmfs/cms.cern.ch/crab3/crab.sh`) and starts a voms proxy:
+First sources the CRAB client (`/cvmfs/cms.cern.ch/crab3/crab.sh`) and starts a voms proxy:
 ```bash
 source setupCRAB.sh
 ```
 Do this once per session, before running `dasgoclient` queries or submitting jobs.
 
-## Compile the dataset `.yaml` file
+## Fill in the `.yaml` files with dataset information
 
 Samples are described in a `.yaml` file under `../dataset/` (see [`mc_RunIIUL18-miniAODv2.yaml`](../dataset/mc_RunIIUL18-miniAODv2.yaml) as a reference). The file has two top-level blocks:
 
@@ -49,13 +49,20 @@ python3 fetch_info_dataset.py --central_dataset /TTToSemiLeptonic_TuneCP5_13TeV-
 
 `multisubmitter_CRAB.py` loops over the samples in the `.yaml` file (matching `--filter`) and submits one CRAB task per sample, using the same PSet config (`--config`, produced as described in the main [README](../README.md)) for all of them.
 
-Example: submit only the `ttbarToBsToTauTau` sample(s) as production `v1`:
+Example: submit only the `ttbarToBsToTauTau` simulated sample(s) as production `v1`:
 ```bash
 python3 multisubmitter_CRAB.py --dataset ../dataset/mc_RunIIUL18-miniAODv2.yaml \
     --filter="ttbarToBsToTauTau*" \
-    --config ../test/run_nanoUL18_150X_cfg.py \
-    --output_dir /store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/ \
+    --config ../test/run_nanoUL18_150X_mc_cfg.py \
+    --output_dir /store/group/cmst3/group/bpark/bstautau/nanoAODv15_<some-folder>/ \
     -v 1
 ```
-Add `--dryrun` first to sanity-check the generated CRAB configuration before
-actually submitting.
+Example: submit only the `SingleMuon` dataset containing data as production `v1`:
+```bash
+python3 multisubmitter_CRAB.py --dataset ../dataset/data_RunIIUL18-miniAODv2.yaml \
+  --filter="SingleMuon*" \
+  --config ../test/run_nanoUL18_150X_data_cfg.py \
+  --output_dir /store/group/cmst3/group/bpark/bstautau/nanoAODv15_<some-folder>/ \
+  -v 1
+```
+Add `--dryrun` first to sanity-check the generated CRAB configuration before actually submitting.

@@ -29,7 +29,7 @@ if __name__ == '__main__':
         'filter'        : '*',
         'config'        : 'run_nanoUL18_150X_cfg.py', 
         'campaign'      : 'RunIIUL18', 
-        'output_dir'    : '/store/group/phys_bphys/cbasile/BsTauTau-ttbar/nanov15_UParTditau/',
+        'output_dir'    : '/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/', # (!) N.B. /store/cmst3/group/bpark/ is only a mirror of it
         'version'       : 0,
         'MaxFiles'      : 10000,
         'tag'           : None
