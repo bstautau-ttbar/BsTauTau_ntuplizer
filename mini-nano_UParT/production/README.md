@@ -53,16 +53,22 @@ Example: submit only the `ttbarToBsToTauTau` simulated sample(s) as production `
 ```bash
 python3 multisubmitter_CRAB.py --dataset ../dataset/mc_RunIIUL18-miniAODv2.yaml \
     --filter="ttbarToBsToTauTau*" \
-    --config ../test/run_nanoUL18_150X_mc_cfg.py \
-    --output_dir /store/group/cmst3/group/bpark/bstautau/nanoAODv15_<some-folder>/ \
+    --config ../test/run_nanobtvUL18_150X_mc_cfg.py \
+    --output_dir /store/group/cmst3/group/bpark/bstautau/nanov15_<some-folder>/ \
     -v 1
 ```
 Example: submit only the `SingleMuon` dataset containing data as production `v1`:
 ```bash
 python3 multisubmitter_CRAB.py --dataset ../dataset/data_RunIIUL18-miniAODv2.yaml \
   --filter="SingleMuon*" \
-  --config ../test/run_nanoUL18_150X_data_cfg.py \
-  --output_dir /store/group/cmst3/group/bpark/bstautau/nanoAODv15_<some-folder>/ \
+  --config ../test/run_nanobtvUL18_150X_data_cfg.py \
+  --output_dir /store/group/cmst3/group/bpark/bstautau/nanov15_<some-folder>/ \
   -v 1
 ```
 Add `--dryrun` first to sanity-check the generated CRAB configuration before actually submitting.
+
+The commands above will create a directory to store the job-logs `crabjobs_YYYYMonDD`. Check the job-status for all the jobs stored in a given folder by running:
+```bash
+python3 jobsummary_CRAB.py crabjobs_2026Oct15
+```
+the results are then stored in a `.csv` file saved in that folder.

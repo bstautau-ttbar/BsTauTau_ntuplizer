@@ -19,6 +19,8 @@ def submit(config, dryrun = False):
       except ClientException as cle:
           print("Failed submitting task:",cle)
 
+MAX_JOB_SUBMIT = 10000
+
 if __name__ == '__main__':
     
     #from multiprocessing import Process
@@ -87,7 +89,7 @@ if __name__ == '__main__':
     #executable      = args.executable
     #process_name    = 'args.process_name'
     tag             = args.tag
-    #campaign        = args.campaign
+    campaign        = args.campaign
     step            = 'nanoAODv15'
     todaystring     = datetime.date.today().strftime('%Y%b%d')
     version         = 'v'+str(args.version)
@@ -128,7 +130,7 @@ if __name__ == '__main__':
         config.Data.outputDatasetTag     = dataset_tag
         config.Data.splitting            = 'FileBased'
         config.Data.unitsPerJob          = info.get('splitting', thiscommon.get('splitting', 10))
-        config.Data.totalUnits           = unitstot
+        config.Data.totalUnits           = MAX_JOB_SUBMIT * config.Data.unitsPerJob
         config.Data.outputDatasetTag     = dataset_tag
         config.Data.inputDBS             = 'global' #'phys03'
 
@@ -147,7 +149,7 @@ if __name__ == '__main__':
 
         config.section_('Site')
         config.Site.storageSite = 'T2_CH_CERN'
-        config.Site.blacklist   = ['T2_BE_IIHE']
+        config.Site.blacklist   = ['T2_BE_IIHE', 'T2_CH_CSCS']
  
         # time to submit 
         submit(config, dry_run_)
