@@ -1,0 +1,54 @@
+# ---
+# /eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/
+# !!! no trailing / in the paths
+# --- 2018 MC samples wit UPartT branch for ditau tagger and jet-mass regeression - v0
+#   - ditau tagger w/ pairwise features and 3-signal class reference
+#   - mass regressor w/o pairwise features and single class reference
+
+# - SIGNAL -
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau_RunIIUL18_nanoAODv15/260825_****/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToBsToTauTau_TuneCP5_13TeV-pythia8-evtgen/ttbarToBsToTauTau-ext_RunIIUL18_nanoAODv15/260825_******/0000
+# - TTBAR -
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15/260825_*****/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15/260825_*****/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15/260825_*****/0002
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/TTTo2L2Nu_RunIIUL18_nanoAODv15/260825_*****/0003
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0002
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0003
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0004
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/TTToSemiLeptonic_RunIIUL18_nanoAODv15/260825_******/0005
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0002
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0003
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0004
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0005
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0006
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Aug25/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/TTToHadronic_RunIIUL18_nanoAODv15/260825_******/0007
+# - SINGLE TOP -
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/ST_s_RunIIUL18_nanoAODv15/261007_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_antit_RunIIUL18_nanoAODv15/261007_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_antit_RunIIUL18_nanoAODv15/261007_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_antit_RunIIUL18_nanoAODv15/261007_******/0002
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_t_RunIIUL18_nanoAODv15/261007_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_t_RunIIUL18_nanoAODv15/261007_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_t_RunIIUL18_nanoAODv15/261007_******/0002
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_t_RunIIUL18_nanoAODv15/261007_******/0003
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8/ST_t_RunIIUL18_nanoAODv15/261007_******/0004
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8/ST_antitw_RunIIUL18_nanoAODv15/261007_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct07/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8/ST_tw_RunIIUL18_nanoAODv15/261007_******/0000
+# - DY -  !!! change directory once the productioon is finished
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/DY_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/DY_RunIIUL18_nanoAODv15/261014_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/DYext_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/DYext_RunIIUL18_nanoAODv15/261014_******/0001
+# - VV -
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/WW_TuneCP5_13TeV-pythia8/WW_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/WZ_TuneCP5_13TeV-pythia8/WZ_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/ZZ_TuneCP5_13TeV-pythia8/ZZ_RunIIUL18_nanoAODv15/261014_******/0000
+# - W + jets -
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/W_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Wext_RunIIUL18_nanoAODv15/261014_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanoAODv15_UParTditau_tagMreg/crabjobs_v0_2026Oct14/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Wext_RunIIUL18_nanoAODv15/261014_******/0001

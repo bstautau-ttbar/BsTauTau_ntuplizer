@@ -9,6 +9,15 @@ import glob
 import BsTauTau.nanoSkimmer.EraConfig as eracfg
 import BsTauTau.nanoSkimmer.logger as log 
 
+MAX_JOBS_OWNER = 100000 # max numer of jobs per user in condor queue.
+
+_ttbar_channels_ = {
+    'mc'        : ['emu', 'mumu', 'ee', 'e', 'mu'],
+    'data_sm'   : ['emu', 'mumu', 'mu'],
+    'data_eg'   : ['emu', 'ee', 'e'],
+    'data_meg'  : ['emu'],
+    'data_dm'   : ['mumu']   
+}
 
 def buildCondorFile(opt,FarmDirectory, infodict):
 
@@ -20,7 +29,7 @@ def buildCondorFile(opt,FarmDirectory, infodict):
 
 # ---- condor submission file -----
   condorFile=os.path.join(FarmDirectory, f'condorsub_{jobname}.sub')
-  print(f"\t> {os.path.basename(condorFile)}")
+  #print(f"\t> {os.path.basename(condorFile)}")
   
   with open (condorFile,'w') as condor:
 
@@ -115,7 +124,7 @@ echo ------- END JOB :  `date`
 def split_input(opt, FarmDirectory):
   """ split the submission by samples """
 
-  condorfiles = []
+  condorfiles = [] # (condor.sub, Njobs)
   
   datasets = open(opt.input).read().splitlines()
   if len(datasets) == 0:
@@ -133,27 +142,37 @@ def split_input(opt, FarmDirectory):
     if "#" in dataset or len(dataset)<2: continue
     if not fnmatch(dataset, opt.filter) : continue
     log.print_addition(f'{dataset}')
-    
-    sufix='mc' if not opt.isdata else 'data' # FIXME: better from name?
+    dataset_name = dataset.split('/')[-3]+"_"+dataset.split('/')[-1]
+
+    # suffix identify the sample : 'mc', 'SingleMuon', 'EGamma', 'DoubleMuon' and 'MuonEG'
+    suffix = ''
+    pd = ''
+    if opt.isdata: 
+        suffix = 'data'
+        if 'SingleMuon' in dataset_name : pd = '_sm'
+        if 'EGamma' in dataset_name : pd = '_eg'
+        if 'MuonEG' in dataset_name : pd = '_meg'
+        if 'DoubleMuon' in dataset_name : pd = '_dm'
+    else:
+        suffix = 'mc'
+
     prefix=''
     year=opt.year
-    #print(dataset.split('/'))
-    dataset_name = dataset.split('/')[-3]+"_"+dataset.split('/')[-1]
     
     file_list = glob.glob(dataset+'/*.root')
     max_files = min(opt.nfiles, len(file_list)) if opt.nfiles>0 else len(file_list)
     file_list = file_list[:max_files]
-    log.print_info(f' dataset | suffix | year | #files: {dataset_name} | {sufix} | {year} | {len(file_list)}')
+    log.print_info(f' dataset | suffix | year | #files: {dataset_name} | {suffix} | {year} | {len(file_list)}')
     
     if len(file_list) == 0:
       log.print_error('found invalid dataset "{}" stop the code'.format(dataset))
       sys.exit(1)
 
-    channels=['ee','emu','mumu','e','mu']
+    channels=_ttbar_channels_[suffix+pd]
     yearmodified=year
-    if "preVFP" in dataset and year=="2016" and (sufix=="mc" or sufix=="sig"):
+    if "preVFP" in dataset and year=="2016" and (suffix=="mc" or suffix=="sig"):
         yearmodified="2016pre"
-    if "preVFP" not in dataset and year=="2016" and (sufix=="mc" or sufix=="sig"):
+    if "preVFP" not in dataset and year=="2016" and (suffix=="mc" or suffix=="sig"):
         yearmodified="2016post"
       
     
@@ -162,20 +181,20 @@ def split_input(opt, FarmDirectory):
      
       output_full=output_template.format(channel=channel, year=year, tag=opt.tag, sample_id=dataset_name.split('_')[0], sample_full=dataset_name)
       os.makedirs(output_full, exist_ok=True)
-      print(f'[OUT] {output_full}')
+      #print(f'[OUT] {output_full}')
       
       # apply filter to data: trigger and GRL
       if opt.isdata:
         filter=eracfg.ANALYSISCUT['data'][year][channel]
       else:
         filter=eracfg.ANALYSISCUT['mc'][year][channel]
-      print (f"\t({year} | {channel}) FILTER : {filter} ")
+      #print (f"\t({year} | {channel}) FILTER : {filter} ")
 
       sample_dict ={
         'name'      : '_'.join([dataset_name, channel]),
         'prefix'    : prefix,
         'files'     : file_list,
-        'analysis'  : 'analysis_'+channel+sufix+yearmodified,
+        'analysis'  : 'analysis_'+channel+suffix+yearmodified,
         'output'    : output_full,
         'filter'    : filter,
       }
@@ -184,7 +203,7 @@ def split_input(opt, FarmDirectory):
         FarmDirectory,
         sample_dict 
       )
-      if os.path.exists(this_condor): condorfiles.append(this_condor)
+      if os.path.exists(this_condor): condorfiles.append((this_condor, len(file_list)))
 
   return condorfiles
 
@@ -234,25 +253,58 @@ def main():
   condorfiles = split_input(opt, FarmDirectory)
   print('\n----------------------\n')
 
-  # submitter script to submit all the jobs
-  log.print_success('Prepare `submitter.sh` to submit the jobs')
-  with open('submitter.sh','w') as submitter:
-    submitter.write('#!/bin/bash\n')
-    for condor_script in condorfiles: 
-      log.print_exe('condor_submit {}'.format(os.path.relpath(condor_script)), logger=submitter)
-    submitter.write('echo "DONE | all jobs submitted"\n')
+  # split the submission in multiple submitter not to hit the MAX_JOBS_OWNER limit
+  total_jobs = sum([njobs for _, njobs in condorfiles])
+  Nsubmitters = (total_jobs // MAX_JOBS_OWNER) + 1
+  batch_indices = []
+  if Nsubmitters > 1: 
+    log.print_warning(f' TOTAL JOBS ({total_jobs}) exceeds MAX_JOBS_OWNER={MAX_JOBS_OWNER} -> split submission in {Nsubmitters} submitters.')
 
+    Njobs_batch = 0
+    for i, (condor_file, njobs) in enumerate(condorfiles):
+      Njobs_batch += njobs
+
+      if Njobs_batch >= MAX_JOBS_OWNER:
+        if i == 0 : 
+          log.print_error(f'{njobs} jobs in first submission {condor_file} exceeding MAX_JOBS_OWNER={MAX_JOBS_OWNER}. Please split the input dataset.')
+          sys.exit(1)
+        
+        batch_indices.append(i)
+        Njobs_batch = njobs # reset the counter to the current job number
+  batch_indices.append(len(condorfiles)) # last batch
+
+  print ('\n >>> SUBMISSION <<<')
+
+  # submitter script(s) to submit all the jobs
+  sub_exe =[]
+  batch_start = 0
+  for i, batch_end in enumerate(batch_indices):
+    batch_condorfiles = condorfiles[batch_start:batch_end]
+    batch_start = batch_end
+    log.print_info(f'Batch {i+1}/{len(batch_indices)}: {len(batch_condorfiles)} condor files, {sum([njobs for _, njobs in batch_condorfiles])} jobs')
+    
+    sub_name = os.path.join(FarmDirectory,f'submitter_{i}.sh')
+    with open(sub_name,'w') as submitter:
+      submitter.write('#!/bin/bash\n')
+      for condor_script, _ in batch_condorfiles: 
+        log.print_exe('condor_submit {}'.format(os.path.relpath(condor_script)), logger=submitter)
+      submitter.write('echo "DONE | all jobs submitted"\n')
+    
+    if os.path.exists(sub_name):
+      os.chmod(sub_name, 0o755)
+      sub_exe.append(sub_name)
+      log.print_success(f'Prepare `{sub_name}` to submit the jobs')
+  
   print('\n----------------------')
-  command = 'chmod u+x submitter.sh'
-  log.print_exe(command)
-  os.system(command)
-  cmdtosubmit =  './submitter.sh'
+  
+  cmdtosubmit =  './{tosub}'
 
-  if not opt.submit:
-    log.print_info(f'DRYRUN: to submit the jobs, run: {cmdtosubmit}')
+  if not opt.submit or len(sub_exe) > 1:
+    log.print_info(f'DRYRUN: to submit the jobs check the script(s): {", ".join(sub_exe)}')
   else:
-    log.print_info(f'Submitting the jobs with: {cmdtosubmit}')
-    os.system(cmdtosubmit) 
+    sub_exe_rel = os.path.relpath(sub_exe[0])
+    log.print_info(f'Submitting the jobs with: {cmdtosubmit.format(tosub=sub_exe_rel)}')
+    os.system(cmdtosubmit.format(tosub=sub_exe_rel))
 
   return 0
       

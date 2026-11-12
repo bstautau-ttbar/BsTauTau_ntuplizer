@@ -41,13 +41,16 @@ def getKey(fh, name):
 
 fileHandles = []
 goFast = True
+ngoodfiles = 0
 for fn in files:
-    print("+ ", str(fn))
+    if len(files) < 20: print("+ ", str(fn))
     fileHandles.append(ROOT.TFile.Open(fn))
+    ngoodfiles += 1
     if fileHandles[-1].GetCompressionSettings() != fileHandles[0].GetCompressionSettings():
         goFast = False
         print("Disabling fast merging as inputs have different compressions")
 of = ROOT.TFile(ofname, "recreate")
+print(f"+ {ngoodfiles} files")
 if goFast:
     of.SetCompressionSettings(fileHandles[0].GetCompressionSettings())
 of.cd()

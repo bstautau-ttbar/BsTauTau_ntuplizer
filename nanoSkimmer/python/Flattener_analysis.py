@@ -279,7 +279,7 @@ class Analysis(Module):
         CL1FastJet      = self.corr_jes_L1FastJet.evaluate(jet.area, jet.eta, jet.pt, rho)
         CL2Relative     = self.corr_jes_L2Relative.evaluate(jet.eta, jet.pt)
         CL3Absolute     = self.corr_jes_L3Absolute.evaluate(jet.eta, jet.pt)
-        CL2L3Residual   = self.corr_jes_L2L3Residual.evaluate(jet.eta, jet.pt) if self.isMC else self.corr_jes_L2L3Residual.evaluate(jet.eta, jet.pt, runumber) 
+        CL2L3Residual   = self.corr_jes_L2L3Residual.evaluate(jet.eta, jet.pt) if self.isMC else self.corr_jes_L2L3Residual.evaluate(float(runumber), jet.eta, jet.pt) 
     
         # apply JEC
         jet.jes_factor  = CL1FastJet*CL2Relative*CL3Absolute*CL2L3Residual

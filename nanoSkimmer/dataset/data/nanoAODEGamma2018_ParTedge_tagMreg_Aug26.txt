@@ -1,0 +1,23 @@
+# ---
+# /eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/
+# !!! no trailing / in the paths
+# --- 2018 MC samples wit UPartT branch for ditau tagger and jet-mass regeression - v0
+#   - ditau tagger w/ pairwise features and 3-signal class reference
+#   - mass regressor w/o pairwise features and single class reference
+
+# -- A --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018A_RunIIUL18_nanoAODv15/261028_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018A_RunIIUL18_nanoAODv15/261028_******/0001
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018A_RunIIUL18_nanoAODv15/261028_******/0002
+# -- B --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Nov02/EGamma/EGamma_2018B_RunIIUL18_nanoAODv15/261102_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Nov02/EGamma/EGamma_2018B_RunIIUL18_nanoAODv15/261102_******/0001
+# -- C --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018C_RunIIUL18_nanoAODv15/261028_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018C_RunIIUL18_nanoAODv15/261028_******/0001
+## -- D --
+#/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018D_RunIIUL18_nanoAODv15/261028_******/0000
+#/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018D_RunIIUL18_nanoAODv15/261028_******/0001
+#/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018D_RunIIUL18_nanoAODv15/261028_******/0002
+#/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018D_RunIIUL18_nanoAODv15/261028_******/0003
+#/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct28/EGamma/EGamma_2018D_RunIIUL18_nanoAODv15/261028_******/0004

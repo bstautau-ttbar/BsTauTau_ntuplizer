@@ -15,7 +15,7 @@ Script to check the jobs from the flattener
 DEEP_CHECK = False
 DEBUG      = False
 
-def check_ROOTfile(filename, trees=('Runs',), hists=('autoPU',)):
+def check_ROOTfile(filename, trees=('Runs',), hists=('autoPU',), isdata=False):
     result = {
         'ok': False,
         'reason': '',
@@ -51,9 +51,20 @@ def check_ROOTfile(filename, trees=('Runs',), hists=('autoPU',)):
         tree = tfile.Get(tn)
         if not tree or not isinstance(tree, ROOT.TTree):
             problems.append(f'missing tree {tn}')
+            result['missing_trees'].append(tn)
             continue
         if tn == 'Runs' and tree.GetEntries() == 0:
-            problems.append(f'empty tree {tn}')
+            if not isdata:
+                # MC: Runs is never filtered -> normalization info lost
+                problems.append(f'empty tree {tn}')
+            else:
+                # data: empty Runs is OK only if the JSON removed everything
+                for other in ('LuminosityBlocks', 'Events'):
+                    t = tfile.Get(other)
+                    if t and isinstance(t, ROOT.TTree) and t.GetEntries() > 0:
+                        problems.append(f'empty Runs but {other} has {t.GetEntries()} entries')
+                if not problems:
+                    result['reason'] = 'empty after golden JSON'  # informational only
     
     for hn in hists:
         hist = tfile.Get(hn)
@@ -112,7 +123,10 @@ if __name__ == "__main__":
                         '{sample_full}_{channel}')
     
     for dataset in datasets:
-        if '#' in dataset: continue
+        if not dataset or dataset.strip() == '':
+            continue
+        if dataset.lstrip().startswith('#'):
+            continue
         if not fnmatch(dataset, opt.filter) : continue
         tot_datasets += 1
         log.print_bold(' ---- %s ----'%(dataset.split('/')[-3]))
@@ -151,7 +165,7 @@ if __name__ == "__main__":
             # check if empty or zoombie files are present in output
             bad_files = []
             for filename in glob.glob(outdataset):
-                check = check_ROOTfile(filename)
+                check = check_ROOTfile(filename, hists = ('autoPU',) if not opt.isdata else (), isdata=opt.isdata)
                 if DEBUG: print(check)
                 if not check['ok']:
                     bad_files.append((filename, check['reason']))

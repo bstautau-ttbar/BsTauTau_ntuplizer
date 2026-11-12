@@ -14,10 +14,11 @@ from runPostJob import check_ROOTfile
 
 def main():
     parser = optparse.OptionParser()
-    parser.add_option("-i", "--inputDir", dest="inputDir", help="input directory")
+    parser.add_option("-i", "--inputDir",   dest="inputDir",   help="input directory")
     parser.add_option("-o", "--outputFile", dest="outputFile", help="output .root file")
-    parser.add_option("-d", "--dryrun", dest="dryrun", action="store_true", default=False, help="print hadd command without executing it")
-    parser.add_option("-f", "--force", dest="force", action="store_true", default=False, help="force overwrite of output file if it already exists")
+    parser.add_option("-d", "--dryrun",     dest="dryrun", action="store_true", default=False, help="print hadd command without executing it")
+    parser.add_option("-f", "--force",      dest="force", action="store_true", default=False, help="force overwrite of output file if it already exists")
+    parser.add_option("--isdata",           dest="isdata", action="store_true", default=False, help="flag indicating if the input files are data (default: MC)")
     (options, args) = parser.parse_args()
 
     # input location and #directories
@@ -57,10 +58,11 @@ def main():
         cmd = "python3 $CMSSW_BASE/src/BsTauTau/nanoSkimmer/scripts/haddnano.py %s %s" % (thisOutputFile, inFiles)
         log.print_exe(cmd)
         if not options.dryrun: os.system(cmd)
-        thisCheck = check_ROOTfile(thisOutputFile)
+        thisCheck = check_ROOTfile(thisOutputFile, hists=('autoPU',) if not options.isdata else (), isdata=options.isdata)
         # check output
         if not thisCheck["ok"] :
             log.print_error(" intermediate output file %s is not valid, exiting" % thisOutputFile)
+            print(thisCheck)
             sys.exit(1)
         tmp_outputFiles.append(thisOutputFile)
 

@@ -1,0 +1,16 @@
+# ---
+# /eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/
+# !!! no trailing / in the paths
+# --- 2018 MC samples wit UPartT branch for ditau tagger and jet-mass regeression - v0
+#   - ditau tagger w/ pairwise features and 3-signal class reference
+#   - mass regressor w/o pairwise features and single class reference
+
+# -- A --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct16/MuonEG/MuonEG_2018A_None_nanoAODv15/261016_******/0000
+# -- B --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct16/MuonEG/MuonEG_2018B_None_nanoAODv15/261016_******/0000
+# -- C --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct16/MuonEG/MuonEG_2018C_None_nanoAODv15/261016_******/0000
+# -- D --
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct16/MuonEG/MuonEG_2018D_None_nanoAODv15/261016_******/0000
+/eos/cms/store/group/cmst3/group/bpark/bstautau/nanov15_UParTditau_tagMreg/crabjobs_v0_2026Oct16/MuonEG/MuonEG_2018D_None_nanoAODv15/261016_******/0001
