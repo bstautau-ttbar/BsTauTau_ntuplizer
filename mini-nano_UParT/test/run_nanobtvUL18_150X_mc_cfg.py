@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: --step NANO:@BTV --eventcontent NANOAODSIM --datatier NANOAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --customise_commands process.NANOAODSIMoutput.outputCommands += ["drop nanoaodFlatTable_pfCandTable_*_*","drop nanoaodFlatTable_jetPFCandTable_*_*","drop nanoaodFlatTable_fatJetPFCandTable_*_*"] --nThreads 2 --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_cfg.py --fileout file:step_nanoAODv15.root --filein dbs:/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM -n 100 --mc --no_exec
+# with command line options: --step NANO --eventcontent NANOAODSIM --datatier NANOAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --nThreads 2 --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_mc_cfg.py --fileout file:step_nanoAODv15.root --filein dbs:/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM -n 100 --mc --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
@@ -201,18 +201,11 @@ from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeCommon
 #call to customisation function nanoAOD_customizeCommon imported from PhysicsTools.NanoAOD.nano_cff
 process = nanoAOD_customizeCommon(process)
 
-# Automatic addition of the customisation function from PhysicsTools.NanoAOD.custom_btv_cff
-from PhysicsTools.NanoAOD.custom_btv_cff import BTVCustomNanoAOD 
-
-#call to customisation function BTVCustomNanoAOD imported from PhysicsTools.NanoAOD.custom_btv_cff
-process = BTVCustomNanoAOD(process)
-
 # End of customisation functions
 
 
 # Customisation from command line
 
-process.NANOAODSIMoutput.outputCommands += ["drop nanoaodFlatTable_pfCandTable_*_*","drop nanoaodFlatTable_jetPFCandTable_*_*","drop nanoaodFlatTable_fatJetPFCandTable_*_*"] 
 process.source.delayReadingEventProducts = cms.untracked.bool(False)
 
 # Add early deletion of temporary data products to reduce peak memory need

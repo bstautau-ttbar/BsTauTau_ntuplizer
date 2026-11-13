@@ -12,10 +12,9 @@ cp onnx_models/UParT_v0_mass_reg.onnx $CMSSW_BASE/src/RecoBTag/Combined/data/UPa
 ## Run locally
 Produce the config file to run on miniAOD and in clude the jet-branch with the UParT models inference. E.g. for **UL 2018 MC** run:
 ``` bash
-cmsDriver.py --step NANO:@BTV \
+cmsDriver.py --step NANO \
  --eventcontent NANOAODSIM --datatier NANOAODSIM \
  --customise Configuration/DataProcessing/Utils.addMonitoring \
- --customise_commands 'process.NANOAODSIMoutput.outputCommands += ["drop nanoaodFlatTable_pfCandTable_*_*","drop nanoaodFlatTable_jetPFCandTable_*_*","drop nanoaodFlatTable_fatJetPFCandTable_*_*"]' \
  --nThreads 2 \
  --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
  --python_filename run_nanobtvUL18_150X_mc_cfg.py \
@@ -25,10 +24,9 @@ cmsDriver.py --step NANO:@BTV \
 ```
 for **UL 2018 DATA** run:
 ```bash
-cmsDriver.py --step NANO:@BTV \
+cmsDriver.py --step NANO \
  --eventcontent NANOAOD --datatier NANOAOD \
  --customise Configuration/DataProcessing/Utils.addMonitoring \
- --customise_commands 'process.NANOAODoutput.outputCommands += ["drop nanoaodFlatTable_pfCandTable_*_*","drop nanoaodFlatTable_jetPFCandTable_*_*","drop nanoaodFlatTable_fatJetPFCandTable_*_*"]' \
  --nThreads 2 \
  --conditions 150X_dataRun2_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
  --python_filename run_nanobtvUL18_150X_data_cfg.py \
@@ -45,7 +43,7 @@ and test it with
 The config file already produced are in the `test/` folder you can test them locally with `cmsRun`.
 
 New jet-branches for the di-tau tagger are `Jet_btagMyUParTditaue`, `Jet_btagMyUParTditauh`, `Jet_btagMyUParTditaumu`, `Jet_btagMyUParTprobb`, `Jet_btagMyUParTprobc` and `Jet_btagMyUParTprobother`. 
-New jet-branche for the jet mass regression is `Jet_UParTRegMassCentral`.
+New jet-branch for the jet mass regression is `Jet_UParTRegMassCentral`.
 
 ## Submission on CRAB
 
