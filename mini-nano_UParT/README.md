@@ -16,6 +16,7 @@ cmsDriver.py --step NANO \
  --eventcontent NANOAODSIM --datatier NANOAODSIM \
  --customise Configuration/DataProcessing/Utils.addMonitoring \
  --nThreads 2 \
+ --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT \
  --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
  --python_filename run_nanobtvUL18_150X_mc_cfg.py \
  --fileout file:step_nanoAODv15.root \
@@ -28,6 +29,7 @@ cmsDriver.py --step NANO \
  --eventcontent NANOAOD --datatier NANOAOD \
  --customise Configuration/DataProcessing/Utils.addMonitoring \
  --nThreads 2 \
+ --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT \
  --conditions 150X_dataRun2_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
  --python_filename run_nanobtvUL18_150X_data_cfg.py \
  --fileout file:step_nanoAODv15.root \

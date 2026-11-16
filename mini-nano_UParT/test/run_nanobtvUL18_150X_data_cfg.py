@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: --step NANO --eventcontent NANOAOD --datatier NANOAOD --customise Configuration/DataProcessing/Utils.addMonitoring --nThreads 2 --conditions 150X_dataRun2_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_data_cfg.py --fileout file:step_nanoAODv15.root --filein /store/data/Run2018A/SingleMuon/MINIAOD/UL2018_MiniAODv2_GT36-v2/60000/083624A7-087B-6743-A634-329E30A579DA.root -n 100 --no_exec
+# with command line options: --step NANO --eventcontent NANOAOD --datatier NANOAOD --customise Configuration/DataProcessing/Utils.addMonitoring --nThreads 2 --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT --conditions 150X_dataRun2_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_data_cfg.py --fileout file:step_nanoAODv15.root --filein /store/data/Run2018A/SingleMuon/MINIAOD/UL2018_MiniAODv2_GT36-v2/60000/083624A7-087B-6743-A634-329E30A579DA.root -n 100 --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
@@ -111,6 +111,12 @@ from Configuration.DataProcessing.Utils import addMonitoring
 
 #call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
 process = addMonitoring(process)
+
+# Automatic addition of the customisation function from PhysicsTools.NanoAOD.custom_btv_cff
+from PhysicsTools.NanoAOD.custom_btv_cff import addBsTauTauUParT 
+
+#call to customisation function addBsTauTauUParT imported from PhysicsTools.NanoAOD.custom_btv_cff
+process = addBsTauTauUParT(process)
 
 # Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
 from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeCommon 

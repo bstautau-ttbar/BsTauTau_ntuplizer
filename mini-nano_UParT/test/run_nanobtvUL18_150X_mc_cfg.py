@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: --step NANO --eventcontent NANOAODSIM --datatier NANOAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --nThreads 2 --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_mc_cfg.py --fileout file:step_nanoAODv15.root --filein dbs:/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM -n 100 --mc --no_exec
+# with command line options: --step NANO --eventcontent NANOAODSIM --datatier NANOAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --nThreads 2 --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 --python_filename run_nanobtvUL18_150X_mc_cfg.py --fileout file:step_nanoAODv15.root --filein dbs:/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM -n 100 --mc --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
@@ -194,6 +194,12 @@ from Configuration.DataProcessing.Utils import addMonitoring
 
 #call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
 process = addMonitoring(process)
+
+# Automatic addition of the customisation function from PhysicsTools.NanoAOD.custom_btv_cff
+from PhysicsTools.NanoAOD.custom_btv_cff import addBsTauTauUParT 
+
+#call to customisation function addBsTauTauUParT imported from PhysicsTools.NanoAOD.custom_btv_cff
+process = addBsTauTauUParT(process)
 
 # Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
 from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeCommon 
