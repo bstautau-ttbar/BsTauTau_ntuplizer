@@ -53,7 +53,7 @@ Example: submit only the `ttbarToBsToTauTau` simulated sample(s) as production `
 ```bash
 python3 multisubmitter_CRAB.py --dataset ../dataset/mc_RunIIUL18-miniAODv2.yaml \
     --filter="ttbarToBsToTauTau*" \
-    --config ../test/run_nanobtvUL18_150X_mc_cfg.py \
+    --config ../test/run_nanoUL18_150X_mc_cfg.py \
     --output_dir /store/group/cmst3/group/bpark/bstautau/nanov15_<some-folder>/ \
     -v 1
 ```
@@ -61,7 +61,7 @@ Example: submit only the `SingleMuon` dataset containing data as production `v1`
 ```bash
 python3 multisubmitter_CRAB.py --dataset ../dataset/data_RunIIUL18-miniAODv2.yaml \
   --filter="SingleMuon*" \
-  --config ../test/run_nanobtvUL18_150X_data_cfg.py \
+  --config ../test/run_nanoUL18_150X_data_cfg.py \
   --output_dir /store/group/cmst3/group/bpark/bstautau/nanov15_<some-folder>/ \
   -v 1
 ```

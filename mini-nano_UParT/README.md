@@ -18,7 +18,7 @@ cmsDriver.py --step NANO \
  --nThreads 2 \
  --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT \
  --conditions 150X_mc2018_realistic_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
- --python_filename run_nanobtvUL18_150X_mc_cfg.py \
+ --python_filename run_nanoUL18_150X_mc_cfg.py \
  --fileout file:step_nanoAODv15.root \
  --filein "dbs:/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM" \
  -n 100 --mc --no_exec
@@ -31,7 +31,7 @@ cmsDriver.py --step NANO \
  --nThreads 2 \
  --customise PhysicsTools/NanoAOD/custom_btv_cff.addBsTauTauUParT \
  --conditions 150X_dataRun2_v1 --era Run2_2018,run2_nanoAOD_106Xv2 \
- --python_filename run_nanobtvUL18_150X_data_cfg.py \
+ --python_filename run_nanoUL18_150X_data_cfg.py \
  --fileout file:step_nanoAODv15.root \
  --filein "/store/data/Run2018A/SingleMuon/MINIAOD/UL2018_MiniAODv2_GT36-v2/60000/083624A7-087B-6743-A634-329E30A579DA.root" \
  -n 100 --no_exec
